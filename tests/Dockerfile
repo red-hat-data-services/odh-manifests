@@ -36,7 +36,7 @@ RUN curl -o /tmp/chromedriver_linux64.zip -L https://chromedriver.storage.google
 
 COPY Pipfile Pipfile.lock $HOME/peak/
 
-RUN pip3 install micropipenv &&\
+RUN pip3 install micropipenv prometheus_client requests &&\
     ln -s `which pip3` /usr/bin/pip &&\
     cd $HOME/peak &&\
     micropipenv install

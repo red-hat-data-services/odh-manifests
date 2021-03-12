@@ -24,8 +24,6 @@ if [ -z "${SKIP_INSTALL}" ]; then
     # This is needed to avoid `oc status` failing inside openshift-ci
     oc new-project ${ODHPROJECT}
     $HOME/peak/install.sh
-    echo "Sleeping for 5 min to let the KfDef install settle"
-    sleep 5m
 fi
 
 success=1
@@ -39,8 +37,8 @@ fi
 echo "Saving the dump of the pods logs in the artifacts directory"
 oc get pods -o yaml -n ${ODHPROJECT} > ${ARTIFACT_DIR}/${ODHPROJECT}.pods.yaml
 echo "Saving the logs from the opendatahub-operator pod in the artifacts directory"
-oc logs -n openshift-operators $(oc get pods -n openshift-operators -l name=opendatahub-operator -o jsonpath="{$.items[*].metadata.name}") > ${ARTIFACT_DIR}/opendatahub-operator.log 2> /dev/null || echo "No logs for openshift-operators/opendatahub-operator"
-oc logs -n opendatahub-operator $(oc get pods -n opendatahub-operator -l name=opendatahub-operator -o jsonpath="{$.items[*].metadata.name}") > ${ARTIFACT_DIR}/odh-operator.log 2> /dev/null || echo "No logs for opendatahub-operator/opendatahub-operator"
+oc logs -n  ${ODHPROJECT} $(oc get pods -n  ${ODHPROJECT} -l name=opendatahub-operator -o jsonpath="{$.items[*].metadata.name}") > ${ARTIFACT_DIR}/opendatahub-operator.log 2> /dev/null || echo "No logs for  ${ODHPROJECT}/opendatahub-operator"
+oc logs -n  ${ODHPROJECT} $(oc get pods -n  ${ODHPROJECT} -l name=opendatahub-operator -o jsonpath="{$.items[*].metadata.name}") > ${ARTIFACT_DIR}/odh-operator.log 2> /dev/null || echo "No logs for  ${ODHPROJECT}/opendatahub-operator"
 
 if [ "$success" -ne 1 ]; then
     exit 1
