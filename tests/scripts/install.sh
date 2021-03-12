@@ -66,6 +66,10 @@ if [ -z "${OPENSHIFT_USER}" ] || [ -z "${OPENSHIFT_PASS}" ]; then
 
   export OPENSHIFT_USER=admin
   export OPENSHIFT_PASS=admin
+  
+  echo "Sleeping for 1 min to let identityProviders is applied"
+  sleep 1m
+  
 fi
 
 if ! [ -z "${SKIP_KFDEF_INSTALL}" ]; then
@@ -75,13 +79,24 @@ if ! [ -z "${SKIP_KFDEF_INSTALL}" ]; then
   echo "Relying on existing KfDef because SKIP_KFDEF_INSTALL was set"
 else
   echo "Creating the following KfDef"
-  cat ./kfctl_openshift.yaml > ${ARTIFACT_DIR}/kfctl_openshift.yaml
-  oc apply -f ./kfctl_openshift.yaml
+  kfdef_file="kfctl_openshift.yaml"
+  if ! [ -z "${TEST_ODS_ON_OSD}" ]; then
+    kfdef_file="kfctl_openshift_osd_e2e.yaml"
+    cat ./kfctl_openshift_osd_e2e.yaml > ${ARTIFACT_DIR}/kfctl_openshift_osd_e2e.yaml
+  else
+    cat ./kfctl_openshift.yaml > ${ARTIFACT_DIR}/kfctl_openshift.yaml
+  fi
+
+  oc apply -f ${kfdef_file}
   kfctl_result=$?
   if [ "$kfctl_result" -ne 0 ]; then
     echo "The installation failed"
     exit $kfctl_result
   fi
+
+  echo "Sleeping for 5 min to let the KfDef install settle"
+  sleep 5m
+
 fi
 set +x
 popd
