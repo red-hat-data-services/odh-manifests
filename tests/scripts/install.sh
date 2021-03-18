@@ -79,13 +79,7 @@ if ! [ -z "${SKIP_KFDEF_INSTALL}" ]; then
   echo "Relying on existing KfDef because SKIP_KFDEF_INSTALL was set"
 else
   echo "Creating the following KfDef"
-  kfdef_file="kfctl_openshift.yaml"
-  if ! [ -z "${TEST_ODS_ON_OSD}" ]; then
-    kfdef_file="kfctl_openshift_osd_e2e.yaml"
-    cat ./kfctl_openshift_osd_e2e.yaml > ${ARTIFACT_DIR}/kfctl_openshift_osd_e2e.yaml
-  else
-    cat ./kfctl_openshift.yaml > ${ARTIFACT_DIR}/kfctl_openshift.yaml
-  fi
+  cat ./kfctl_openshift.yaml > ${ARTIFACT_DIR}/kfctl_openshift.yaml
 
   oc apply -f ${kfdef_file}
   kfctl_result=$?

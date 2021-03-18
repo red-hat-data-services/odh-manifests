@@ -10,14 +10,16 @@ JH_LOGIN_USER=${OPENSHIFT_USER:-"admin"} #Username used to login to JH
 JH_LOGIN_PASS=${OPENSHIFT_PASS:-"admin"} #Password used to login to JH
 OPENSHIFT_LOGIN_PROVIDER=${OPENSHIFT_LOGIN_PROVIDER:-"htpasswd-provider"} #OpenShift OAuth provider used for login
 JH_AS_ADMIN=${JH_AS_ADMIN:-"true"} #Expect the user to be Admin in JupyterHub
-PUSHGATEWAY_URL=${PUSHGATEWAY_URL:-"10.10.116.175:9091"} #Expect psi pushgateway url to put load test result data.
+PUSHGATEWAY_URL=${PUSHGATEWAY_URL:-"localhost:9091"} #Expect psi pushgateway url to put load test result data.
 
 JUPYTER_IMAGES=(s2i-tensorflow-notebook:v0.0.2)
 
-JUPYTER_NOTEBOOK_DIRS=(pytorch tensorflow)
-JUPYTER_NOTEBOOK_FILES=(PyTorch-MNIST-Minimal.ipynb TensorFlow-MNIST-Minimal.ipynb)
+JUPYTER_NOTEBOOK_DIRS=(tensorflow pytorch)
+JUPYTER_NOTEBOOK_FILES=(TensorFlow-MNIST-Minimal.ipynb PyTorch-MNIST-Minimal.ipynb)
 
 JH_AS_ADMIN=false
+JH_NOTEBOOK_SIZE=${JH_NOTEBOOK_SIZE:-"Small"}
+
 os::test::junit::declare_suite_start "$MY_SCRIPT"
 
 function test_jupyterhub() {
@@ -38,7 +40,7 @@ function test_start_notebook() {
     local user=$2
     shift 2
     local notebook_files=$@
-    local size=${4-Small}
+    local size=${JH_NOTEBOOK_SIZE}
 
     header "Testing Jupyter Notebook ${notebook_name} Execution (Size: ${size})"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
