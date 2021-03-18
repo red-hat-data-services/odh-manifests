@@ -102,7 +102,7 @@ class JHStress():
             _LOGGER.info("Report Metrics to PushGateWay")
             # This is commented because there is no ways to access internal pushgateway from OSD.
             # But as soon as we find the way, this will be uncommented. 
-            # self.report_metrics()
+            self.report_metrics()
             self.stop()
             _LOGGER.info("Stopped the server")
         except Exception as e:
@@ -282,7 +282,7 @@ class JHStress():
         step_value=0
         data_line=False
         DD = Del()
-    
+        output_exist=False
         if framework == "tensorflow":
             selected_data = selected_element[-2].text
             _LOGGER.info("output_data: %s" % selected_data)
@@ -296,6 +296,7 @@ class JHStress():
                     _LOGGER.info("epoch_num: %s" % epoch_num)
                     _LOGGER.info("epoch_value: %s" % epoch_value)
                     _LOGGER.info("step_value: %s" % step_value)
+                    output_exist=True
                     self.add_metrics_data(framework,epoch_num,epoch_value,step_value)
                     
 
@@ -312,8 +313,15 @@ class JHStress():
                     epoch_num=int(line.split()[1].translate(DD))+1
                     epoch_value=line.split()[4].split('.')[0].translate(DD)
                     step_value=line.split()[7].split('.')[0].translate(DD)
+                    _LOGGER.info("epoch_num: %s" % epoch_num)
+                    _LOGGER.info("epoch_value: %s" % epoch_value)
+                    _LOGGER.info("step_value: %s" % step_value)
+                    output_exist=True
                     self.add_metrics_data(framework,epoch_num,epoch_value,step_value)
-                    
+                
+        if not output_exist:
+            raise Exception("Output data is wrong")
+
     def report_metrics(self):
         push_to_gateway(self.pushgateway_url, job='jupyterhub_load', registry=self.registry)
 

@@ -24,9 +24,6 @@ TESTS_REGEX=
 ARTIFACT_DIR=/tmp/artifacts
 LOCAL_ARTIFACT_DIR="${PWD}/artifacts"
 
-# This only deploy Jupyterhub that is available on OSD addon
-TEST_ODS_ON_OSD=
-
 # Setting this for pusing ODH Manifests Test Image to quay.io for ODS Operator Test Harness
 DEFAULT_IMAGE_REGISTRY=quay.io
 DEFAULT_REGISTRY_NAMESPACE=opendatahub
