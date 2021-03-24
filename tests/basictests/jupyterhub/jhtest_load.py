@@ -66,7 +66,7 @@ class JHLoad():
         }
         self.as_admin = strtobool(os.environ.get('JH_AS_ADMIN', 'False'))
         self.headless = strtobool(os.environ.get('JH_HEADLESS', 'False'))
-        self.preload_repos = os.environ.get('JH_PRELOAD_REPOS', "https://github.com/Xaenalt/notebook-benchmarks")
+        self.preload_repos = os.environ.get('JH_PRELOAD_REPOS', "https://github.com/red-hat-data-service/notebook-benchmarks")
         self.pushgateway_url = os.environ.get('PUSHGATEWAY_URL', "localhost:9091")
         
         self.registry = CollectorRegistry()
