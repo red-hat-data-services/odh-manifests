@@ -45,11 +45,11 @@ function test_start_notebook() {
     header "Testing Jupyter Notebook ${notebook_name} Execution (Size: ${size})"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
     route="https://"$(oc get route jupyterhub -o jsonpath='{.spec.host}' -n ${ODHPROJECT})
+
     os::cmd::expect_success "JH_HEADLESS=true JH_USER_NAME=${user} JH_LOGIN_USER=${JH_LOGIN_USER} JH_LOGIN_PASS=${JH_LOGIN_PASS} OPENSHIFT_LOGIN_PROVIDER=${OPENSHIFT_LOGIN_PROVIDER} \
     JH_NOTEBOOKS=${notebook_files} JH_NOTEBOOK_IMAGE=${notebook_name} JH_AS_ADMIN=${JH_AS_ADMIN} \
     JH_URL=${route} JH_NOTEBOOK_SIZE=${size} PUSHGATEWAY_URL=${PUSHGATEWAY_URL}\
     python3 ${MY_DIR}/jupyterhub/jhtest_load.py"
-
 }
 
 function test_notebooks() {
@@ -62,7 +62,10 @@ function test_notebooks() {
     test_start_notebook ${JUPYTER_IMAGES[0]}  jh-test0 $(IFS=, ; echo "${notebooks[*]}")
 }
 
-test_jupyterhub
-test_notebooks
+# This is for MODH ADDON test only
+if [ $ODHPROJECT == "redhat-ods-applications" ]; then
+    test_jupyterhub
+    test_notebooks
 
-os::test::junit::declare_suite_end
+    os::test::junit::declare_suite_end
+fi
