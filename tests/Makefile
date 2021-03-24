@@ -26,7 +26,7 @@ LOCAL_ARTIFACT_DIR="${PWD}/artifacts"
 
 # Setting this for pusing ODH Manifests Test Image to quay.io for ODS Operator Test Harness
 DEFAULT_IMAGE_REGISTRY=quay.io
-DEFAULT_REGISTRY_NAMESPACE=opendatahub
+DEFAULT_REGISTRY_NAMESPACE=modh
 DEFAULT_IMAGE_TAG=latest
 
 # Do not change
@@ -45,6 +45,7 @@ run:
 	# Confirm that we have a directory for storing any screenshots from selenium tests
 	mkdir -p ${LOCAL_ARTIFACT_DIR}/screenshots
 	oc config view --flatten --minify > /tmp/tests-kubeconfig
+        # Add --privileged because someone does not use rootless podman. With this option, you can attach host volume to container.
 	podman run  --privileged -e SKIP_INSTALL=$(SKIP_INSTALL) -e TESTS_REGEX=$(TESTS_REGEX) -e ODHPROJECT=$(ODHPROJECT) \
 		-e OPENSHIFT_USER="$(OPENSHIFT_USER)" -e OPENSHIFT_PASS="$(OPENSHIFT_PASS)" -e OPENSHIFT_LOGIN_PROVIDER=$(OPENSHIFT_LOGIN_PROVIDER) -e ARTIFACT_DIR=$(ARTIFACT_DIR) \
 		-e SKIP_OPERATOR_INSTALL="${SKIP_OPERATOR_INSTALL}" -e SKIP_KFDEF_INSTALL="${SKIP_KFDEF_INSTALL}" \
