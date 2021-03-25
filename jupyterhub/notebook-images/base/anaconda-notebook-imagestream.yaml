@@ -4,7 +4,7 @@ metadata:
   labels:
     opendatahub.io/notebook-image: "true"
   annotations:
-    opendatahub.io/notebook-image-url: "https://github.com/modh/s2i-minimal-notebook"
+    opendatahub.io/notebook-image-url: "quay.io/modh/s2i-minimal-notebook-anaconda"
     opendatahub.io/notebook-image-name: "Minimal Notebook Image using Anaconda"
     opendatahub.io/notebook-image-desc: "Jupyter notebook image with minimal dependency set to start experimenting with Jupyter environment. Uses Anaconda."
   name: s2i-minimal-notebook-anaconda
