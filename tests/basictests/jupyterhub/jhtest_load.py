@@ -66,7 +66,7 @@ class JHLoad():
         }
         self.as_admin = strtobool(os.environ.get('JH_AS_ADMIN', 'False'))
         self.headless = strtobool(os.environ.get('JH_HEADLESS', 'False'))
-        self.preload_repos = os.environ.get('JH_PRELOAD_REPOS', "https://github.com/red-hat-data-service/notebook-benchmarks")
+        self.preload_repos = os.environ.get('JH_PRELOAD_REPOS', "https://github.com/red-hat-data-services/notebook-benchmarks")
         self.pushgateway_url = os.environ.get('PUSHGATEWAY_URL', "localhost:9091")
         
         self.registry = CollectorRegistry()
@@ -107,7 +107,7 @@ class JHLoad():
         _LOGGER.info("Current URL:"+ self.driver.current_url)
         path = notebook.split("/")
      
-        w = WebDriverWait(self.driver, 100)      
+        w = WebDriverWait(self.driver, 300)      
         _LOGGER.info("Current URL:"+ self.driver.current_url)
         auth_elem = w.until(EC.presence_of_element_located((By.XPATH, '//div[@id="notebook_list"]')))
         # auth_elem = w.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/form/input')))
@@ -119,7 +119,7 @@ class JHLoad():
                 _LOGGER.info("segment: "+segment)
                 if segment in ("tensorflow", "pytorch"):
                     framework=segment
-                w = WebDriverWait(self.driver, 10)
+                w = WebDriverWait(self.driver, 300)
                 dir_elem = w.until(EC.presence_of_element_located((By.XPATH, '//span[text()="%s"]' % segment)))
                 dir_elem.click()
 
