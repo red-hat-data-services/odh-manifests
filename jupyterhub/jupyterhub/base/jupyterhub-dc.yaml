@@ -111,6 +111,8 @@ spec:
           limits:
             memory: 1Gi
       serviceAccountName: jupyterhub-hub
+      imagePullSecrets:
+      - name: modh-reader
       volumes:
       - configMap:
           defaultMode: 420
