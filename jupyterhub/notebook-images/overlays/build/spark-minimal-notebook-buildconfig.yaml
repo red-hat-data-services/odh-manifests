@@ -23,7 +23,7 @@ spec:
       - name: "ENABLE_PIPENV"
         value: "1"
       - name: "THOTH_DRY_RUN"
-        value: "1"
+        value: "0"
       - name: "THOTH_ADVISE"
         value: "0"
       - name: "THOTH_PROVENANCE_CHECK"
