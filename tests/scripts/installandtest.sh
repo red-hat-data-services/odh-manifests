@@ -44,7 +44,6 @@ if [ "$success" -ne 1 ]; then
 fi
 
 
-
 ## Debugging pause...uncomment below to be able to poke around the test pod post-test
 # echo "Debugging pause for 3 hours"
 #sleep 180m
