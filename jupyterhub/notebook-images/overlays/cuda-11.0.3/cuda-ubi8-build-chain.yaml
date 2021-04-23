@@ -48,9 +48,6 @@ items:
   metadata:
     name: "$(cuda_version)-cuda-s2i-core-ubi8"
   spec:
-    triggers:
-      - imageChange: {}
-        type: ImageChange
     source:
       type: Git
       git:
@@ -74,9 +71,6 @@ items:
   metadata:
     name: "$(cuda_version)-cuda-s2i-base-ubi8"
   spec:
-    triggers:
-      - imageChange: {}
-        type: ImageChange
     source:
       type: Git
       git:
@@ -100,9 +94,6 @@ items:
   metadata:
     name: "$(cuda_version)-cuda-s2i-py38-ubi8"
   spec:
-    triggers:
-      - imageChange: {}
-        type: ImageChange
     source:
       type: Git
       git:
@@ -126,9 +117,6 @@ items:
   metadata:
     name: "$(cuda_version)-cuda-s2i-thoth-ubi8-py38"
   spec:
-    triggers:
-      - imageChange: {}
-        type: ImageChange
     source:
       type: Git
       git:
