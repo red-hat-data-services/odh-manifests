@@ -31,6 +31,14 @@ spec:
         name: manifests
         path: odh-dashboard
     name: odh-dashboard
+  - kustomizeConfig:
+      parameters:
+        - name: namespace
+          value: openshift-operators
+      repoRef:
+        name: manifests
+        path: openshift-pipelines/cluster
+    name: openshift-pipelines
   repos:
   - name: manifests
     uri: https://github.com/red-hat-data-services/odh-manifests/tarball/master
