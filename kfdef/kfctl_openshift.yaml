@@ -122,6 +122,11 @@ spec:
         name: manifests
         path: odh-dashboard
     name: odh-dashboard
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: monitoring
+    name: monitoring
   repos:
   - name: kf-manifests
     uri: https://github.com/kubeflow/manifests/archive/v1.2-branch.tar.gz
