@@ -5,7 +5,7 @@ metadata:
     opendatahub.io/notebook-image: "true"
   annotations:
     opendatahub.io/notebook-image-url: "https://github.com/thoth-station/s2i-generic-data-science-notebook"
-    opendatahub.io/notebook-image-name: "Standard Data Science"
+    opendatahub.io/notebook-image-name: "Data Science"
     opendatahub.io/notebook-image-desc: "Jupyter notebook image with a set of data science libraries that advanced AI/ML notebooks will use as a base image to provide a standard for libraries avialable in all notebooks"
   name: s2i-generic-data-science-notebook
 spec:
