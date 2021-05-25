@@ -9,6 +9,13 @@ spec:
     to:
       kind: ImageStreamTag
       name: s2i-lab-elyra:v0.0.7
+  resources:
+    limits:
+      cpu: "2"
+      memory: 4Gi
+    requests:
+      cpu: "1"
+      memory: 2Gi
   source:
     git:
       uri: https://github.com/opendatahub-io/s2i-lab-elyra
