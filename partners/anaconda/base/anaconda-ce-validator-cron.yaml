@@ -27,6 +27,13 @@ spec:
                 - name: secret-volume
                   mountPath: /etc/secret-volume
                   readOnly: true
+            resources:
+              limits:
+                cpu: 100m
+                memory: 256Mi
+              requests:
+                cpu: 100m
+                memory: 256Mi
           volumes:
             - name: secret-volume
               secret:

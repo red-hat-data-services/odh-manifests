@@ -23,7 +23,11 @@ items:
         name: s2i-minimal-notebook-gpu:3.6
     resources:
       limits:
-        memory: 3Gi
+        cpu: "2"
+        memory: 4Gi
+      requests:
+        cpu: "1"
+        memory: 2Gi
     source:
       git:
         ref: v0.0.7
