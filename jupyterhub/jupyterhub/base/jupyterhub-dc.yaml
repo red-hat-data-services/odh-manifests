@@ -93,6 +93,10 @@ spec:
           protocol: TCP
         resources:
           limits:
+            cpu: "1"
+            memory: 1Gi
+          requests:
+            cpu: "1"
             memory: 1Gi
         volumeMounts:
         - mountPath: /opt/app-root/configs
@@ -112,6 +116,10 @@ spec:
         name: wait-for-database
         resources:
           limits:
+            cpu: "1"
+            memory: 1Gi
+          requests:
+            cpu: "1"
             memory: 1Gi
       serviceAccountName: jupyterhub-hub
       imagePullSecrets:

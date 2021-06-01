@@ -10,6 +10,13 @@ spec:
     to:
       kind: ImageStreamTag
       name: jupyterhub:latest
+  resources:
+    limits:
+      cpu: "2"
+      memory: 4Gi
+    requests:
+      cpu: "1"
+      memory: 2Gi
   source:
     git:
       ref: v3.5.1
