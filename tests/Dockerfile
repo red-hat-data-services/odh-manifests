@@ -3,6 +3,7 @@ FROM centos:centos8
 ARG CHROMEDRIVER_VER=90.0.4430.24
 ARG ORG=opendatahub-io
 ARG BRANCH=master
+ARG ODS_CI_BRANCH=master
 
 ENV HOME /root
 WORKDIR /root
@@ -40,6 +41,10 @@ RUN pip3 install micropipenv &&\
     ln -s `which pip3` /usr/bin/pip &&\
     cd $HOME/peak &&\
     micropipenv install
+
+RUN cd $HOME/src && \
+    git clone --depth=1 --branch ${ODS_CI_BRANCH} https://github.com/red-hat-data-services/ods-ci && \
+    cp $HOME/src/odh-manifests/tests/resources/ods-ci/test-variables.yml $HOME/src/ods-ci/
 
 COPY setup/operatorsetup scripts/install.sh scripts/installandtest.sh $HOME/peak/
 COPY resources $HOME/peak/operator-tests/odh-manifests/resources

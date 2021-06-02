@@ -39,10 +39,10 @@ function test_start_notebook() {
 
     os::cmd::expect_success "oc project ${ODHPROJECT}"
     route="https://"$(oc get route jupyterhub -o jsonpath='{.spec.host}')
-    os::cmd::expect_success "JH_HEADLESS=true JH_USER_NAME=${user} JH_LOGIN_USER=${JH_LOGIN_USER} JH_LOGIN_PASS=${JH_LOGIN_PASS} OPENSHIFT_LOGIN_PROVIDER=${OPENSHIFT_LOGIN_PROVIDER} \
-    JH_NOTEBOOKS=${notebook_file} JH_NOTEBOOK_IMAGE=${notebook_name} JH_AS_ADMIN=${JH_AS_ADMIN} \
-    JH_URL=${route} JH_NOTEBOOK_SIZE=${size} \
-    python3 ${MY_DIR}/jupyterhub/jhtest.py"
+    dashboard_route="https://"$(oc get route odh-dashboard -o jsonpath='{.spec.host}')
+    pushd "${HOME}/src/ods-ci
+    os::cmd::expect_success "run_robot_test.sh --test-case tests/Tests/test-jupyterlab-notebook.robot --test-variable ODH_DASHBOARD_URL=${dashboard_route}
+    popd
 }
 
 function test_notebooks() {
