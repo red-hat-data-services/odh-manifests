@@ -8,10 +8,10 @@ spec:
     local: true
   tags:
   - annotations:
-      openshift.io/imported-from: quay.io/odh-jupyterhub/jupyterhub-img:v0.2.8
+      openshift.io/imported-from: quay.io/odh-jupyterhub/jupyterhub-img:v0.3.0
     from:
       kind: DockerImage
-      name: quay.io/odh-jupyterhub/jupyterhub-img:v0.2.8
+      name: quay.io/odh-jupyterhub/jupyterhub-img:v0.3.0
     name: latest
     referencePolicy:
       type: Source
