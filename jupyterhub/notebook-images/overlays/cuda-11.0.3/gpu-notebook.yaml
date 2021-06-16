@@ -78,7 +78,11 @@ items:
         kind: ImageStreamTag
         name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
     resources:
+      limits:
+        cpu: "4"
+        memory: 8Gi
       requests:
+        cpu: "2"
         memory: 4Gi
     completionDeadlineSeconds: 1800
     successfulBuildsHistoryLimit: 1
@@ -113,8 +117,10 @@ items:
         name: 'tensorflow-gpu:py3.8-cuda-$(cuda_version)'
     resources:
       limits:
+        cpu: "4"
         memory: 8Gi
       requests:
+        cpu: "2"
         memory: 6Gi
     completionDeadlineSeconds: 1800
     successfulBuildsHistoryLimit: 1
@@ -147,8 +153,10 @@ items:
         name: 'pytorch-gpu:py3.8-cuda-$(cuda_version)'
     resources:
       limits:
+        cpu: "4"
         memory: 8Gi
       requests:
+        cpu: "2"
         memory: 6Gi
     completionDeadlineSeconds: 1800
     successfulBuildsHistoryLimit: 1
