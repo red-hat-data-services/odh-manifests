@@ -54,3 +54,11 @@ rules:
       - patch
     resources:
       - imagestreams
+      - build.openshift.io
+    verbs:
+      - get
+      - list
+      - watch
+    resources:
+      - builds
+      - buildconfigs
