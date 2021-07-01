@@ -93,6 +93,15 @@ items:
     completionDeadlineSeconds: 1800
     successfulBuildsHistoryLimit: 1
     failedBuildsHistoryLimit: 1
+    triggers:
+      - imageChange: {}
+        type: ImageChange
+    source:
+      type: Git
+      git:
+        uri: "https://github.com/sclorg/s2i-base-container"
+        ref: "d777ab3"
+      contextDir: "core/"
     strategy:
       type: Docker
       dockerStrategy:
@@ -132,6 +141,15 @@ items:
     completionDeadlineSeconds: 1800
     successfulBuildsHistoryLimit: 1
     failedBuildsHistoryLimit: 1
+    triggers:
+      - imageChange: {}
+        type: ImageChange
+    source:
+      type: Git
+      git:
+        uri: "https://github.com/sclorg/s2i-base-container"
+        ref: "d777ab3"
+      contextDir: "base/"
     strategy:
       type: Docker
       dockerStrategy:
@@ -171,6 +189,15 @@ items:
     completionDeadlineSeconds: 1800
     successfulBuildsHistoryLimit: 1
     failedBuildsHistoryLimit: 1
+    triggers:
+      - imageChange: {}
+        type: ImageChange
+    source:
+      type: Git
+      git:
+        uri: "https://github.com/sclorg/s2i-python-container"
+        ref: "4d85c35"
+      contextDir: "3.8/"
     strategy:
       type: Docker
       dockerStrategy:
@@ -204,12 +231,23 @@ items:
       limits:
         cpu: "2"
         memory: 4Gi
+        ephemeral-storage: 40Gi
       requests:
         cpu: "1"
         memory: 2Gi
+        ephemeral-storage: 40Gi
     completionDeadlineSeconds: 1800
     successfulBuildsHistoryLimit: 1
     failedBuildsHistoryLimit: 1
+    triggers:
+      - imageChange: {}
+        type: ImageChange
+    source:
+      type: Git
+      git:
+        uri: "https://github.com/thoth-station/s2i-thoth"
+        ref: "v0.28.0"
+      contextDir: "ubi8-py38/"
     strategy:
       type: Docker
       dockerStrategy:
