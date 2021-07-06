@@ -54,6 +54,7 @@ rules:
       - patch
     resources:
       - imagestreams
+  - apiGroups:
       - build.openshift.io
     verbs:
       - get
