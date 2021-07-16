@@ -8,7 +8,7 @@ metadata:
     app: jupyterhub
   name: jupyterhub
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     app: jupyterhub
     deploymentconfig: jupyterhub
@@ -117,6 +117,17 @@ spec:
         volumeMounts:
         - mountPath: /opt/app-root/configs
           name: config
+        readinessProbe:
+            tcpSocket:
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 10
+      - name: jupyterhub-ha-sidecar
+        image: gcr.io/google_containers/leader-elector:0.5
+        args:
+        - --election=jupyterhub-ha-election
+        - --election-namespace=$(namespace)
+        - --http=0.0.0.0:4040
       initContainers:
       - command:
         - wait-for-database
