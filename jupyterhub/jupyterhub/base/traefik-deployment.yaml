@@ -1,0 +1,91 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: traefik-proxy
+  labels:
+    k8s-app: traefik-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: traefik-proxy
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-proxy
+        name: traefik-proxy
+    spec:
+      serviceAccountName: traefik-proxy
+
+      volumes:
+      - name: config
+        configMap:
+          name: traefik-config
+      - name: watched
+        emptyDir: {}
+
+      initContainers:
+      - name: init-touch-rules
+        image: bitnami/kubectl:1.21.2
+        volumeMounts:
+        - mountPath: "/watched"
+          name: "watched"
+        command:
+        - "/bin/bash"
+        - -c
+        args:
+        # this file has to exist before traefik starts
+        # so the watch can be set up properly
+        - touch /watched/rules.toml
+
+      containers:
+      - image: quay.io/internaldatahub/traefik:v1.7-build
+        name: traefik-proxy
+        volumeMounts:
+        - mountPath: "/config"
+          name: "config"
+        - mountPath: "/watched"
+          name: "watched"
+        ports:
+        - containerPort: 8080
+          name: api
+        - containerPort: 8099
+          name: auth
+        args:
+        - --configfile=/config/traefik.toml
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 8081
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 8081
+          failureThreshold: 1
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 100m
+            memory: 50Mi
+
+      - image: quay.io/internaldatahub/configmap-puller:0.1
+        imagePullPolicy: Always
+        name: configmap-puller
+        volumeMounts:
+        - mountPath: "/watched"
+          name: "watched"
+        args:
+        - -outfile-name=/watched/rules.toml
+        - -configmap-name=traefik-rules
+        - -configmap-key=rules.toml
+        resources:
+          limits:
+            cpu: 30m
+            memory: 20Mi

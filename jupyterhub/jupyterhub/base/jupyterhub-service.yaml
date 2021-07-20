@@ -14,6 +14,10 @@ spec:
     port: 8081
     protocol: TCP
     targetPort: 8081
+  - name: jsp
+    protocol: TCP
+    port: 8181
+    targetPort: 8181
   selector:
     app: jupyterhub
     deploymentconfig: jupyterhub

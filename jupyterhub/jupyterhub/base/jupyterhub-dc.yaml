@@ -91,7 +91,17 @@ spec:
             configMapKeyRef:
               name: jupyterhub-cfg
               key: notebook_destination
-        image: quay.io/odh-jupyterhub/jupyterhub-img:v0.3.1
+        - name: TRAEFIK_API_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: $(traefik-credentials-secret)
+              key: TRAEFIK_API_USERNAME
+        - name: TRAEFIK_API_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: $(traefik-credentials-secret)
+              key: TRAEFIK_API_PASSWORD
+        image: quay.io/maulikjs/jupyterhub-img:v3.5.3-toml-cm-parameterized
         imagePullPolicy: "Always"
         name: jupyterhub
         ports:
@@ -118,7 +128,7 @@ spec:
               key: POSTGRESQL_PASSWORD
         - name: JUPYTERHUB_DATABASE_HOST
           value: jupyterhub-db
-        image: quay.io/odh-jupyterhub/jupyterhub-img:v0.3.0
+        image: quay.io/maulikjs/jupyterhub-img:v3.5.3-toml-cm-parameterized
         imagePullPolicy: "Always"
         name: wait-for-database
         resources:
@@ -138,4 +148,3 @@ spec:
         name: config
   triggers:
   - type: ConfigChange
-

@@ -20,6 +20,14 @@ resources:
 - jupyterhub-spark-operator-configmap.yaml
 - jupyterhub-groups-configmap.yaml
 - jupyterhub-notebook-image-puller-rb.yaml
+- traefik-credentials-secret.yaml
+- traefik-configmap.yaml
+- traefik-deployment.yaml
+- traefik-role.yaml
+- traefik-rolebinding.yaml
+- traefik-serviceaccount.yaml
+- traefik-service.yaml
+- traefik-route.yaml
 
 commonLabels:
   opendatahub.io/component: "true"
@@ -66,12 +74,20 @@ vars:
     apiVersion: v1
   fieldref:
     fieldpath: data.jupyterhub_secret
+<<<<<<< HEAD
 - name: notebook_destination
+=======
+- name: traefik_credentials_secret
+>>>>>>> 28f6353 (Add deployment artifacts for traefik proxy and update jupyterhub to use traefik proxy)
   objref:
     kind: ConfigMap
     name: parameters
     apiVersion: v1
   fieldref:
+<<<<<<< HEAD
     fieldpath: data.notebook_destination
+=======
+    fieldpath: data.traefik_credentials_secret
+>>>>>>> 28f6353 (Add deployment artifacts for traefik proxy and update jupyterhub to use traefik proxy)
 configurations:
 - params.yaml
