@@ -3,7 +3,7 @@ kind: Route
 metadata:
   labels:
     app: jupyterhub
-  name: jupyterhub
+  name: traefik-proxy
 spec:
   host: ''
   port:

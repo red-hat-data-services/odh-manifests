@@ -94,12 +94,12 @@ spec:
         - name: TRAEFIK_API_USERNAME
           valueFrom:
             secretKeyRef:
-              name: $(traefik-credentials-secret)
+              name: $(traefik_credentials_secret)
               key: TRAEFIK_API_USERNAME
         - name: TRAEFIK_API_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $(traefik-credentials-secret)
+              name: $(traefik_credentials_secret)
               key: TRAEFIK_API_PASSWORD
         image: quay.io/maulikjs/jupyterhub-img:v3.5.3-toml-cm-parameterized
         imagePullPolicy: "Always"

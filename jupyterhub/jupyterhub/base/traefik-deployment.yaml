@@ -84,6 +84,7 @@ spec:
         args:
         - -outfile-name=/watched/rules.toml
         - -configmap-name=traefik-rules
+        - -configmap-namespace=$(namespace)
         - -configmap-key=rules.toml
         resources:
           limits:
