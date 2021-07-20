@@ -14,7 +14,7 @@ data:
       [entryPoints.auth_api]
       address = ":8099"
       [api]
-      dashboard = true
+      dashboard = false
       entrypoint = "auth_api"
       [wss]
       protocol = "https"
