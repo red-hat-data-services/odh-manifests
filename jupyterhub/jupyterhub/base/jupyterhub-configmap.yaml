@@ -19,7 +19,7 @@ data:
     # traefik api endpoint login password
     c.TraefikTomlConfigmapProxy.traefik_api_password = os.environ['TRAEFIK_API_PASSWORD']
 
-    c.TraefikTomlConfigmapProxy.cm_namespace = "proxy-poc"
+    c.TraefikTomlConfigmapProxy.cm_namespace = "$(namespace)"
     c.TraefikTomlConfigmapProxy.cm_name = "traefik-rules"
     c.TraefikTomlConfigmapProxy.in_cluster = True
 

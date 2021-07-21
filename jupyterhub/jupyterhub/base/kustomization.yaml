@@ -75,20 +75,19 @@ vars:
     apiVersion: v1
   fieldref:
     fieldpath: data.jupyterhub_secret
-<<<<<<< HEAD
 - name: notebook_destination
-=======
-- name: traefik_credentials_secret
->>>>>>> 28f6353 (Add deployment artifacts for traefik proxy and update jupyterhub to use traefik proxy)
   objref:
     kind: ConfigMap
     name: parameters
     apiVersion: v1
   fieldref:
-<<<<<<< HEAD
     fieldpath: data.notebook_destination
-=======
+- name: traefik_credentials_secret
+  objref:
+    kind: ConfigMap
+    name: parameters
+    apiVersion: v1
+  fieldref:
     fieldpath: data.traefik_credentials_secret
->>>>>>> 28f6353 (Add deployment artifacts for traefik proxy and update jupyterhub to use traefik proxy)
 configurations:
 - params.yaml

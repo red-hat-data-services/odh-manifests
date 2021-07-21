@@ -6,7 +6,7 @@ metadata:
   labels:
     k8s-app: traefik-proxy
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       k8s-app: traefik-proxy
@@ -29,7 +29,7 @@ spec:
 
       initContainers:
       - name: init-touch-rules
-        image: bitnami/kubectl:1.21.2
+        image: "registry.access.redhat.com/ubi8/ubi-micro:8.4"
         volumeMounts:
         - mountPath: "/watched"
           name: "watched"

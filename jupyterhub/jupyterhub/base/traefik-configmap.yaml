@@ -5,7 +5,7 @@ metadata:
 data:
   traefik.toml: |
       debug = true
-      logLevel = "DEBUG"
+      logLevel = "INFO"
       defaultentrypoints = ["https"]
       [entryPoints.https]
       address = ":8080"
