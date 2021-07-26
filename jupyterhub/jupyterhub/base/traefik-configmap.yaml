@@ -28,5 +28,3 @@ data:
       watch = true
       [ping]
       entryPoint = "healthz"
-
-     

@@ -18,5 +18,3 @@ varReference:
   kind: ConfigMap
 - path: subjects/name
   kind: RoleBinding
-- path: spec/template/spec/containers[]/args
-  kind: DeploymentConfig

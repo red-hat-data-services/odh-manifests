@@ -44,6 +44,11 @@ spec:
       containers:
       - image: quay.io/internaldatahub/traefik:v1.7-build
         name: traefik-proxy
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         volumeMounts:
         - mountPath: "/config"
           name: "config"
@@ -78,13 +83,18 @@ spec:
       - image: quay.io/internaldatahub/configmap-puller:0.1
         imagePullPolicy: Always
         name: configmap-puller
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         volumeMounts:
         - mountPath: "/watched"
           name: "watched"
         args:
         - -outfile-name=/watched/rules.toml
         - -configmap-name=traefik-rules
-        - -configmap-namespace=$(namespace)
+        - -configmap-namespace=$(NAMESPACE)
         - -configmap-key=rules.toml
         resources:
           limits:
