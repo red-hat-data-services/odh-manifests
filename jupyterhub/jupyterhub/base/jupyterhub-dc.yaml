@@ -101,7 +101,7 @@ spec:
             secretKeyRef:
               name: $(traefik_credentials_secret)
               key: TRAEFIK_API_PASSWORD
-        image: quay.io/maulikjs/jupyterhub-img:v3.5.3-toml-cm-parameterized
+        image: quay.io/odh-jupyterhub/jupyterhub-img:pr-104
         imagePullPolicy: "Always"
         name: jupyterhub
         ports:
@@ -139,7 +139,7 @@ spec:
               key: POSTGRESQL_PASSWORD
         - name: JUPYTERHUB_DATABASE_HOST
           value: jupyterhub-db
-        image: quay.io/maulikjs/jupyterhub-img:v3.5.3-toml-cm-parameterized
+        image: quay.io/odh-jupyterhub/jupyterhub-img:pr-104
         imagePullPolicy: "Always"
         name: wait-for-database
         resources:
