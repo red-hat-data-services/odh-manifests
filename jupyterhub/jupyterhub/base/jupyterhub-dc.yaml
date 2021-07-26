@@ -13,9 +13,43 @@ spec:
     app: jupyterhub
     deploymentconfig: jupyterhub
   strategy:
-    recreateParams:
-      timeoutSeconds: 1200
-    type: Recreate
+    type: Custom
+    resources: {}
+    customParams:
+      image: quay.io/openshift/origin-deployer:4.7.0
+      command:
+      - /bin/sh
+      - -c
+      - >
+        set -x;
+
+        function get_latest() {
+          oc get pod -l "deploymentconfig=jupyterhub" -o jsonpath='{.items[0].metadata.labels.deployment}';
+        };
+
+        function generate_payload() {
+          echo '{"kind":"Scale","apiVersion":"autoscaling/v1","metadata":{"name":"'$1'","namespace":"'${OPENSHIFT_DEPLOYMENT_NAMESPACE}'"},"spec":{"replicas": '$2'}}'
+        };
+        
+        function post_scale() {
+          curl -kL -XPUT -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" https://openshift.default.svc.cluster.local/api/v1/namespaces/${OPENSHIFT_DEPLOYMENT_NAMESPACE}/replicationcontrollers/$1/scale -d @$2;
+        };
+
+        export TOKEN=$(cat /run/secrets/kubernetes.io/serviceaccount/token);
+        export OLD_RC=$(get_latest);
+
+        echo $(generate_payload ${OLD_RC} 0) > /tmp/old.yaml;
+        echo $(generate_payload ${OPENSHIFT_DEPLOYMENT_NAME} 3) > /tmp/new.yaml;
+        
+        post_scale ${OLD_RC} /tmp/old.yaml;
+        post_scale ${OPENSHIFT_DEPLOYMENT_NAME} /tmp/new.yaml;
+
+        retry=0;
+        while [ "$(get_latest)" != "${OPENSHIFT_DEPLOYMENT_NAME}" ]; do retry=$(( retry + 1 )); if [ ${retry} -ge 300 ]; then break; fi; sleep 1; done;
+        if [ "${retry}" -ge 300 ]; then echo "Deployment failed"; exit 1; fi
+
+        SUCCESS=0;
+        while [ ${SUCCESS} != 1 ]; do curl http://jupyterhub:8081 && SUCCESS=1 || sleep 1;  done;
   template:
     metadata:
       annotations:
