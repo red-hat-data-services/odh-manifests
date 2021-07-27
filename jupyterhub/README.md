@@ -3,11 +3,15 @@
 JupyterHub comes with 2 components:
 
 1. [jupyterhub](#jupyterhub)
-1. [notebook-images](#notebook-images)
+2. [notebook-images](#notebook-images)
 
 ## jupyterhub
 
 Contains deployment manifests for JupyterHub instance.
+
+## Jupyterhub Architecture
+
+Out of the box Jupyterhub will deploy its components in a High Availibility configuration. This entails 3 copies of the central Jupyterhub server as well as 3 copies of a Traefik Proxy that is reponsible for routing user traffic to notebook pods. To disable HA users can set the `replica` count for Jupyterhub and Traefik to `1`. In its current configuration, jupyterhub server pods will always have 1 leader pod. The other pods will stay on standby and constantly try and get a lock to become the new leader. In case you disable HA, there will always be just the one pod that is acting as the leader and the new pod that comes online in case of failure will become the new leader.  
 
 ### Parameters
 

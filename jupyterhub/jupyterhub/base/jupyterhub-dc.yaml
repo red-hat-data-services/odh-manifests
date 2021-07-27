@@ -15,14 +15,13 @@ spec:
   strategy:
     type: Custom
     resources: {}
+    activeDeadlineSeconds: 300
     customParams:
       image: quay.io/openshift/origin-deployer:4.7.0
       command:
       - /bin/sh
       - -c
       - >
-        set -x;
-
         function get_latest() {
           oc get pod -l "deploymentconfig=jupyterhub" -o jsonpath='{.items[0].metadata.labels.deployment}';
         };
@@ -35,21 +34,24 @@ spec:
           curl -kL -XPUT -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" https://openshift.default.svc.cluster.local/api/v1/namespaces/${OPENSHIFT_DEPLOYMENT_NAMESPACE}/replicationcontrollers/$1/scale -d @$2;
         };
 
+        function get_replicas() {
+          oc get rc ${OPENSHIFT_DEPLOYMENT_NAME} -o jsonpath='{.metadata.annotations.kubectl\.kubernetes\.io\/desired-replicas}'
+        }
+
         export TOKEN=$(cat /run/secrets/kubernetes.io/serviceaccount/token);
         export OLD_RC=$(get_latest);
 
         echo $(generate_payload ${OLD_RC} 0) > /tmp/old.yaml;
-        echo $(generate_payload ${OPENSHIFT_DEPLOYMENT_NAME} 3) > /tmp/new.yaml;
-        
+        echo $(generate_payload ${OPENSHIFT_DEPLOYMENT_NAME} $(get_replicas)) > /tmp/new.yaml;    
+  
         post_scale ${OLD_RC} /tmp/old.yaml;
         post_scale ${OPENSHIFT_DEPLOYMENT_NAME} /tmp/new.yaml;
 
-        retry=0;
-        while [ "$(get_latest)" != "${OPENSHIFT_DEPLOYMENT_NAME}" ]; do retry=$(( retry + 1 )); if [ ${retry} -ge 300 ]; then break; fi; sleep 1; done;
-        if [ "${retry}" -ge 300 ]; then echo "Deployment failed"; exit 1; fi
+        while ! oc get pods --field-selector='status.phase==Running' -l deployment=="${OPENSHIFT_DEPLOYMENT_NAME}" 2>/dev/null | grep ${OPENSHIFT_DEPLOYMENT_NAME}; do sleep 1; done;
+        echo "Pods for deplyoment ${OPENSHIFT_DEPLOYMENT_NAME} are Running"
 
-        SUCCESS=0;
-        while [ ${SUCCESS} != 1 ]; do curl http://jupyterhub:8081 && SUCCESS=1 || sleep 1;  done;
+        while ! curl http://jupyterhub:8081; do sleep 1; done
+
   template:
     metadata:
       annotations:
