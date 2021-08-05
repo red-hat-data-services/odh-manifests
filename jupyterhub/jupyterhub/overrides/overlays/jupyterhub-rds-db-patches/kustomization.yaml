@@ -11,3 +11,6 @@ patchesJson6902:
     group: apps.openshift.io
     name: jupyterhub
   path: jupyterhub-rds-patch.yaml
+
+resources:
+  - postgres.yaml
