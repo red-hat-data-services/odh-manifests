@@ -145,6 +145,8 @@ spec:
             secretKeyRef:
               name: $(traefik_credentials_secret)
               key: TRAEFIK_API_PASSWORD
+        - name: JUPYTERHUB_GROUPS_DEFAULT_DENIED
+          value: "true"
         image: quay.io/odh-jupyterhub/jupyterhub-img:v0.3.3
         imagePullPolicy: "Always"
         name: jupyterhub
