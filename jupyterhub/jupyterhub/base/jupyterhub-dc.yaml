@@ -14,7 +14,13 @@ spec:
     deploymentconfig: jupyterhub
   strategy:
     type: Custom
-    resources: {}
+    resources:
+      limits:
+        cpu: 150m
+        memory: 50Mi
+      requests:
+        cpu: 150m
+        memory: 20Mi
     activeDeadlineSeconds: 300
     customParams:
       image: quay.io/openshift/origin-deployer:4.7.0
