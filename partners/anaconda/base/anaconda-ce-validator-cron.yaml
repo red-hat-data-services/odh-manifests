@@ -19,7 +19,7 @@ spec:
           labels:
             parent: "anaconda-ce-periodic-validator"
         spec:
-          serviceAccount: "odh-dashboard"
+          serviceAccount: "rhods-dashboard"
           containers:
           - name: anaconda-ce-validator
             image: quay.io/modh/anaconda-validator:latest

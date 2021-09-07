@@ -14,7 +14,7 @@ spec:
   tags:
   - annotations:
       opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.6"}]'
-      opendatahub.io/notebook-python-dependencies: '[{"name":"Boto3","version":"1.17.11"},{"name":"Kafka-Python","version":"2.0.2"},{"name":"Matplotlib","version":"3.4.2"},{"name":"Numpy","version":"1.21.0"},{"name":"Pandas","version":"1.2.5"},{"name":"Scipy","version":"1.7.0"}]'
+      opendatahub.io/notebook-python-dependencies: '[{"name":"Boto3","version":"1.17.11"},{"name":"Kafka-Python","version":"2.0.2"},{"name":"Matplotlib","version":"3.4.2"},{"name":"Numpy","version":"1.21.0"},{"name":"Pandas","version":"1.2.5"},{"name":"Scikit-learn","version":"0.24.2"},{"name":"Scipy","version":"1.7.0"}]'
       openshift.io/imported-from: quay.io/thoth-station/s2i-generic-data-science-notebook
     from:
       kind: DockerImage

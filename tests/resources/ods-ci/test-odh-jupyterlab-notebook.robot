@@ -4,6 +4,10 @@ Resource         ${RESOURCE_PATH}/ODS.robot
 Resource         ${RESOURCE_PATH}/Common.robot
 Library          DebugLibrary
 
+# Set the library search order to prevent namespace collision with library keywords
+# This is a non-issue in ods-ci because they set this in "Begin Web Test" for RHODS runs
+Suite Setup      Set Library Search Order  SeleniumLibrary
+
 Suite Teardown   End Web Test
 
 

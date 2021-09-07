@@ -1,0 +1,11 @@
+apiVersion: authorization.openshift.io/v1
+kind: RoleBinding
+metadata:
+  name: dedicated-admins-mgmt-rolebinding
+roleRef:
+  apiGroup: authorization.openshift.io
+  kind: ClusterRole
+  name: dedicated-admins-mgmt-role
+subjects:
+- kind: Group
+  name: dedicated-admins

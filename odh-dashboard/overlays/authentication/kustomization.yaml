@@ -10,20 +10,20 @@ patchesJson6902:
       group: apps
       version: v1
       kind: Deployment
-      name: odh-dashboard
+      name: rhods-dashboard
   - path: service-account.yaml
     target:
       kind: ServiceAccount
       version: v1
-      name: odh-dashboard
+      name: rhods-dashboard
   - path: service.yaml
     target:
       kind: Service
       version: v1
-      name: odh-dashboard
+      name: rhods-dashboard
   - target:
       group: route.openshift.io
       version: v1
       kind: Route
-      name: odh-dashboard
+      name: rhods-dashboard
     path: route.yaml

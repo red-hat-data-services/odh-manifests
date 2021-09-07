@@ -5,12 +5,12 @@
     args:
       - --https-address=:8443
       - --provider=openshift
-      - --openshift-service-account=odh-dashboard
+      - --openshift-service-account=rhods-dashboard
       - --upstream=http://localhost:8080
       - --tls-cert=/etc/tls/private/tls.crt
       - --tls-key=/etc/tls/private/tls.key
       - --cookie-secret=SECRET
-      - '--openshift-delegate-urls={"/": {"resource": "route", "verb": "get", "name": "odh-dashboard"}}'
+      - '--openshift-delegate-urls={"/": {"resource": "route", "verb": "get", "name": "rhods-dashboard"}}'
       - --skip-auth-regex=^/metrics
     image: quay.io/openshift/origin-oauth-proxy:4.7.0
     ports:

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: odh-dashboard
+  name: rhods-dashboard
 spec:
   replicas: 2
   selector:
     matchLabels:
-      deployment: odh-dashboard
+      deployment: rhods-dashboard
   template:
     metadata:
       labels:
-        deployment: odh-dashboard
+        deployment: rhods-dashboard
     spec:
-      serviceAccount: odh-dashboard
+      serviceAccount: rhods-dashboard
       containers:
-      - name: odh-dashboard
+      - name: rhods-dashboard
         image: quay.io/modh/odh-dashboard:v1.0.11
         imagePullPolicy: Always
         ports:

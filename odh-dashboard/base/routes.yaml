@@ -4,7 +4,7 @@ metadata:
   annotations:
     kubernetes.io/tls-acme: 'true'
     haproxy.router.openshift.io/hsts_header: max-age=31536000;includeSubDomains;preload       
-  name: odh-dashboard
+  name: rhods-dashboard
 spec:
   port:
     targetPort: 8080
@@ -13,5 +13,5 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: odh-dashboard
+    name: rhods-dashboard
     weight: 100

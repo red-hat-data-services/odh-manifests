@@ -8,5 +8,3 @@ resources:
   - ./jupyterhub-db-dc.yaml
   - ./jupyterhub-db-service.yaml
   - ./jupyterhub-db-pvc.yaml
-  - ./jupyterhub-db-probe.yaml
-  - ./jupyterhub-db-probe-svc.yaml
