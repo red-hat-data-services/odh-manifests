@@ -175,6 +175,13 @@ spec:
             initialDelaySeconds: 15
             periodSeconds: 10
       - name: jupyterhub-ha-sidecar
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
         image: 'registry.redhat.io/openshift4/ose-leader-elector-rhel8:v4.7'
         args:
           - '--election=jupyterhub-ha-election'
