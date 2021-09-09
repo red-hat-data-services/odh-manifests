@@ -42,6 +42,7 @@ Can Launch Tensorflow Load Test Notebook
   Input Text  //div[.="Clone a repo"]/../div[contains(@class, "jp-Dialog-body")]//input  https://github.com/red-hat-data-services/notebook-benchmarks
   Click Element  xpath://div[.="CLONE"]
 
+  # Sometime test failed because it took long time to clone a repository. Therefore I increase this sleep time.
   Sleep  30
   Open With JupyterLab Menu  File  Open from Path…
   Input Text  //div[.="Open Path"]/../div[contains(@class, "jp-Dialog-body")]//input  notebook-benchmarks/tensorflow/TensorFlow-MNIST-Minimal.ipynb
