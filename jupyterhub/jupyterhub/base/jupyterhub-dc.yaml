@@ -211,24 +211,20 @@ spec:
             - /bin/sh
             - -c
             - >
-              function is_leader_election_ready()() {
+              function is_leader_election_ready() {
                   [ $(curl -s -o /dev/null -w ''%{http_code}'' localhost:4040) == "200" ]
               }
-
               function get_leader() {
                   echo "$(curl http://localhost:4040 2> /dev/null | python3 -c "import sys, json; print(json.load(sys.stdin)['name'])")"
               }
-
               function is_empty_string() {
                   # When the sidecar container is not working the name of the leader is an empty string
                   [ "$(get_leader)" == "" ]
               };
-
-              if ! is_leader_election_ready(); then
+              if ! is_leader_election_ready; then
                   # Sidecar container is not ready yet
                   exit 0
               fi
-
               if is_empty_string; then
                   # Sidecar container is returning an empty string, there must be a problem
                   # Sleep for a while to let the rest of the container to restart too
