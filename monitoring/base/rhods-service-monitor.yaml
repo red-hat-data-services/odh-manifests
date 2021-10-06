@@ -20,7 +20,11 @@ spec:
       port: https
       scheme: https
       tlsConfig:
-        insecureSkipVerify: true
+        ca:
+          configMap:
+            name: openshift-service-ca.crt
+            key: service-ca.crt
+        serverName: prometheus.redhat-ods-monitoring.svc
       scrapeTimeout: 10s
       interval: 30s
   namespaceSelector:
