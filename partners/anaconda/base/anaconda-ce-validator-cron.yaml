@@ -31,24 +31,41 @@ spec:
                 
                 IMAGESTREAM_NAME='s2i-minimal-notebook-anaconda'
                 CONFIGMAP_NAME='anaconda-ce-validation-result'
+                BUILDCONFIG_NAME='s2i-minimal-notebook-anaconda'
+                ANACONDA_VERSION='v0.1.1-anaconda'
                 
-                function generate_payload() {
-                  echo '{"apiVersion":"image.openshift.io/v1","kind":"ImageStream","metadata":{"name":"s2i-minimal-notebook-anaconda","labels":{"opendatahub.io/notebook-image":"false","opendatahub.io/modified":"false"},"annotations":{"opendatahub.io/notebook-image-url":"https://github.com/red-hat-data-services/s2i-minimal-notebook-anaconda","opendatahub.io/notebook-image-name":"Anaconda Commercial Edition","opendatahub.io/notebook-image-desc":"Notebook with Anaconda CE tools instead of pip."}},"spec":{"lookupPolicy":{"local":true},"tags":[{"annotations":{"openshift.io/imported-from":"quay.io/modh/s2i-minimal-notebook-anaconda","opendatahub.io/notebook-software":"[{\"name\":\"Anaconda-Python\",\"version\":\"v3.8.5\"}]","opendatahub.io/notebook-python-dependencies":"[{\"name\":\"Anaconda\",\"version\":\"2020.11\"},{\"name\":\"conda\",\"version\":\"4.9.2\"}]"},"from":{"kind":"DockerImage","name":"quay.io/modh/s2i-minimal-notebook-anaconda:v0.1.1-anaconda"},"name":"v0.1.1-anaconda","importPolicy":{"scheduled":true},"referencePolicy":{"type":"Source"}}]}}'
+                function generate_imagestream() {
+                  echo '{"apiVersion":"image.openshift.io/v1","kind":"ImageStream","metadata":{"annotations":{"opendatahub.io/notebook-image-desc":"Notebook with Anaconda CE tools instead of pip.","opendatahub.io/notebook-image-name":"Anaconda Commercial Edition","opendatahub.io/notebook-image-url":"https://github.com/red-hat-data-services/s2i-minimal-notebook-anaconda"},"labels":{"component.opendatahub.io/name":"jupyterhub","opendatahub.io/modified":"false","opendatahub.io/notebook-image":"true"},"name":"s2i-minimal-notebook-anaconda"},"spec":{"lookupPolicy":{"local":true},"tags":[{"annotations":{"opendatahub.io/notebook-python-dependencies":"[{\"name\":\"Anaconda\",\"version\":\"2020.11\"},{\"name\":\"conda\",\"version\":\"4.9.2\"}]","opendatahub.io/notebook-software":"[{\"name\":\"Anaconda-Python\",\"version\":\"v3.8.5\"}]"},"name":"v0.1.1-anaconda","referencePolicy":{"type":"Source"}}]}}'
+                }
+                
+                function generate_buildconfig() {
+                  echo '{"kind":"BuildConfig","apiVersion":"build.openshift.io/v1","metadata":{"name":"s2i-minimal-notebook-anaconda","namespace":"redhat-ods-applications","labels":{"opendatahub.io/build_type":"notebook_image"}},"spec":{"output":{"to":{"kind":"ImageStreamTag","name":"s2i-minimal-notebook-anaconda:v0.1.1-anaconda"}},"strategy":{"type":"Docker","dockerStrategy":{"dockerfilePath":"Dockerfile.AIO"}},"source":{"type":"Git","git":{"uri":"https://github.com/red-hat-data-services/s2i-minimal-notebook-anaconda","ref":"v0.1.1-anaconda-aio"}},"runPolicy":"Serial"}}'
+                }
+                
+                function create_imagestream() {
+                  generate_imagestream | oc apply -f-
+                }
+                
+                function delete_imagestream() {
+                  generate_imagestream | oc delete -f-
+                }
+                
+                function create_buildconfig() {
+                  generate_buildconfig | oc apply -f-
+                }
+                
+                function delete_buildconfig() {
+                  generate_buildconfig | oc delete -f-
+                }
+                
+                function start_build() {
+                  if ! oc get imagestreamtags "${BUILDCONFIG_NAME}:${ANACONDA_VERSION}" 2>/dev/null; then
+                    oc start-build "${BUILDCONFIG_NAME}"
+                  fi
                 }
                 
                 function get_variable() {
                   cat "/etc/secret-volume/${1}"
-                }
-                
-                function verify_image_exists() {
-                  if ! oc get imagestream "${IMAGESTREAM_NAME}" &>/dev/null; then
-                    echo "ImageStream doesn't exist, creating"
-                    generate_payload | oc apply -f -
-                  fi
-                }
-                
-                function write_imagestream_value() {
-                  oc label imagestream "${IMAGESTREAM_NAME}" opendatahub.io/notebook-image=${1} --overwrite
                 }
                 
                 function verify_configmap_exists() {
@@ -68,8 +85,9 @@ spec:
                 
                 function success() {
                   echo "Validation succeeded, enabling image"
-                  verify_image_exists
-                  write_imagestream_value true
+                  create_imagestream
+                  create_buildconfig
+                  start_build
                   verify_configmap_exists
                   write_configmap_value true
                   write_last_valid_time
@@ -77,7 +95,8 @@ spec:
                 
                 function failure() {
                   echo "Validation failed, disabling image"
-                  write_imagestream_value false
+                  delete_imagestream
+                  delete_buildconfig
                   verify_configmap_exists
                   write_configmap_value false
                 }
