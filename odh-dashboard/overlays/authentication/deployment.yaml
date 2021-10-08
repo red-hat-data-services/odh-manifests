@@ -19,7 +19,7 @@
     livenessProbe:
       httpGet:
         path: /oauth/healthz
-        port: 10443
+        port: 8443
         scheme: HTTPS
       initialDelaySeconds: 30
       timeoutSeconds: 1
@@ -29,7 +29,7 @@
     readinessProbe:
       httpGet:
         path: /oauth/healthz
-        port: 10443
+        port: 8443
         scheme: HTTPS
       initialDelaySeconds: 5
       timeoutSeconds: 1
