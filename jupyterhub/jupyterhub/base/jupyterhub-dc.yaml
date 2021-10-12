@@ -191,9 +191,28 @@ spec:
             cpu: 50m
             memory: 50Mi
         image: 'quay.io/opendatahub/leader-elector:v0.1'
+        volumeMounts:
+        - mountPath: /opt/app-root/src
+          name: sidecar-script
         args:
           - '-node-id=$(POD_NAME)'
           - '-namespace=$(NAMESPACE)'
+        readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - /opt/app-root/src/probe.sh
+            initialDelaySeconds: 15
+            periodSeconds: 10
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - /opt/app-root/src/probe.sh
+          initialDelaySeconds: 40
+          periodSeconds: 10
         env:
           - name: NAMESPACE
             valueFrom:
@@ -234,9 +253,13 @@ spec:
       imagePullSecrets:
       - name: addon-managed-odh-pullsecret
       volumes:
-      - configMap:
-          defaultMode: 420
-          name: jupyterhub-cfg
-        name: config
+      - name: config 
+        configMap:
+            defaultMode: 420
+            name: jupyterhub-cfg 
+      - name: sidecar-script
+        configMap:
+          defaultMode: 511
+          name: sidecar-probe
   triggers:
   - type: ConfigChange
