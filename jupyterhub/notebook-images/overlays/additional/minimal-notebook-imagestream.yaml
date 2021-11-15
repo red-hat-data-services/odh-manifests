@@ -4,7 +4,7 @@ metadata:
   labels:
     opendatahub.io/notebook-image: "true"
   annotations:
-    opendatahub.io/notebook-image-url: "https://github.com/thoth-station/s2i-minimal-notebook"
+    opendatahub.io/notebook-image-url: "https://github.com/red-hat-data-services/s2i-minimal-notebook"
     opendatahub.io/notebook-image-name: "Minimal Python"
     opendatahub.io/notebook-image-desc: "Jupyter notebook image with minimal dependency set to start experimenting with Jupyter environment."
     opendatahub.io/notebook-image-order: "10"
@@ -16,11 +16,11 @@ spec:
   - annotations:
       opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.6"}]'
       opendatahub.io/notebook-python-dependencies: '[{"name":"JupyterLab","version": "3.0.16"}, {"name": "Notebook","version": "6.4.0"}]'
-      openshift.io/imported-from: quay.io/thoth-station/s2i-minimal-py38-notebook
+      openshift.io/imported-from: quay.io/modh/odh-minimal-notebook-container
       opendatahub.io/default-image: "true"
     from:
       kind: DockerImage
-      name: quay.io/thoth-station/s2i-minimal-py38-notebook:v0.0.15
-    name: "v0.0.15"
+      name: quay.io/modh/odh-minimal-notebook-container:latest
+    name: "rhods-version"
     referencePolicy:
       type: Local

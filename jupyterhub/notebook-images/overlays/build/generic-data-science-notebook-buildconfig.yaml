@@ -18,7 +18,8 @@ spec:
       memory: 2Gi
   source:
     git:
-      uri: https://github.com/thoth-station/s2i-generic-data-science-notebook
+      uri: https://github.com/red-hat-data-services/s2i-generic-data-science-notebook
+      ref: python38
     type: Git
   strategy:
     sourceStrategy:
