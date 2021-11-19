@@ -18,6 +18,18 @@ spec:
         k8s-app: traefik-proxy
         name: traefik-proxy
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: name
+                      operator: In
+                      values:
+                        - traefik-proxy
+                topologyKey: topology.kubernetes.io/zone
       serviceAccountName: traefik-proxy
       imagePullSecrets:
       - name: addon-managed-odh-pullsecret
@@ -34,6 +46,13 @@ spec:
         volumeMounts:
         - mountPath: "/watched"
           name: "watched"
+        resources:
+          limits:
+            cpu: 150m
+            memory: 50Mi
+          requests:
+            cpu: 150m
+            memory: 20Mi
         command:
         - "/bin/bash"
         - -c
@@ -79,7 +98,7 @@ spec:
         resources:
           limits:
             cpu: 100m
-            memory: 50Mi
+            memory: 100Mi
 
       - image: quay.io/internaldatahub/configmap-puller:0.1
         imagePullPolicy: Always
@@ -100,4 +119,24 @@ spec:
         resources:
           limits:
             cpu: 30m
-            memory: 20Mi
+            memory: 200Mi
+        livenessProbe:
+          exec:
+            command:
+              - cat
+              - /watched/rules.toml
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+              - cat
+              - /watched/rules.toml
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3

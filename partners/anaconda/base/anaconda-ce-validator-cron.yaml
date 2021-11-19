@@ -22,7 +22,102 @@ spec:
           serviceAccount: "rhods-dashboard"
           containers:
           - name: anaconda-ce-validator
-            image: quay.io/modh/anaconda-validator:latest
+            image: quay.io/openshift/origin-deployer:4.7.0
+            command:
+              - /bin/sh
+              - -c
+              - >
+                #!/bin/sh
+                
+                IMAGESTREAM_NAME='s2i-minimal-notebook-anaconda'
+                CONFIGMAP_NAME='anaconda-ce-validation-result'
+                BUILDCONFIG_NAME='s2i-minimal-notebook-anaconda'
+                ANACONDA_VERSION='v0.1.1-anaconda'
+                
+                function generate_imagestream() {
+                  echo '{"apiVersion":"image.openshift.io/v1","kind":"ImageStream","metadata":{"annotations":{"opendatahub.io/notebook-image-desc":"Notebook with Anaconda CE tools instead of pip.","opendatahub.io/notebook-image-name":"Anaconda Commercial Edition","opendatahub.io/notebook-image-url":"https://github.com/red-hat-data-services/s2i-minimal-notebook-anaconda"},"labels":{"component.opendatahub.io/name":"jupyterhub","opendatahub.io/modified":"false","opendatahub.io/notebook-image":"true"},"name":"s2i-minimal-notebook-anaconda"},"spec":{"lookupPolicy":{"local":true},"tags":[{"annotations":{"opendatahub.io/notebook-python-dependencies":"[{\"name\":\"Anaconda\",\"version\":\"2020.11\"},{\"name\":\"conda\",\"version\":\"4.9.2\"}]","opendatahub.io/notebook-software":"[{\"name\":\"Anaconda-Python\",\"version\":\"v3.8.5\"}]"},"name":"v0.1.1-anaconda","referencePolicy":{"type":"Source"}}]}}'
+                }
+                
+                function generate_buildconfig() {
+                  echo '{"kind":"BuildConfig","apiVersion":"build.openshift.io/v1","metadata":{"name":"s2i-minimal-notebook-anaconda","namespace":"redhat-ods-applications","labels":{"opendatahub.io/build_type":"notebook_image"}},"spec":{"output":{"to":{"kind":"ImageStreamTag","name":"s2i-minimal-notebook-anaconda:v0.1.1-anaconda"}},"strategy":{"type":"Docker","dockerStrategy":{"dockerfilePath":"Dockerfile.AIO"}},"source":{"type":"Git","git":{"uri":"https://github.com/red-hat-data-services/s2i-minimal-notebook-anaconda","ref":"v0.1.1-anaconda-aio"}},"runPolicy":"Serial"}}'
+                }
+                
+                function create_imagestream() {
+                  generate_imagestream | oc apply -f-
+                }
+                
+                function delete_imagestream() {
+                  generate_imagestream | oc delete -f-
+                }
+                
+                function create_buildconfig() {
+                  generate_buildconfig | oc apply -f-
+                }
+                
+                function delete_buildconfig() {
+                  generate_buildconfig | oc delete -f-
+                }
+                
+                function start_build() {
+                  if ! oc get imagestreamtags "${BUILDCONFIG_NAME}:${ANACONDA_VERSION}" 2>/dev/null; then
+                    oc start-build "${BUILDCONFIG_NAME}"
+                  fi
+                }
+                
+                function get_variable() {
+                  cat "/etc/secret-volume/${1}"
+                }
+                
+                function verify_configmap_exists() {
+                  if ! oc get configmap "${CONFIGMAP_NAME}" &>/dev/null; then
+                    echo "Result ConfigMap doesn't exist, creating"
+                    oc create configmap "${CONFIGMAP_NAME}" --from-literal validation_result="false"
+                  fi
+                }
+                
+                function write_configmap_value() {
+                  oc patch configmap "${CONFIGMAP_NAME}" -p '"data": { "validation_result": "'${1}'" }'
+                }
+                
+                function write_last_valid_time() {
+                  oc patch configmap "${CONFIGMAP_NAME}" -p '"data": { "last_valid_time": "'$(date -Is)'" }'
+                }
+                
+                function success() {
+                  echo "Validation succeeded, enabling image"
+                  create_imagestream
+                  create_buildconfig
+                  start_build
+                  verify_configmap_exists
+                  write_configmap_value true
+                  write_last_valid_time
+                }
+                
+                function failure() {
+                  echo "Validation failed, disabling image"
+                  delete_imagestream
+                  delete_buildconfig
+                  verify_configmap_exists
+                  write_configmap_value false
+                }
+                
+                CURL_RESULT=$(curl -w 'RESP_CODE:%{response_code}' -IHEAD "https://repo.anaconda.cloud/repo/t/$(get_variable Anaconda_ce_key)/main/noarch/repodata.json" 2>/dev/null)
+                CURL_CODE=$(echo "${CURL_RESULT}" | grep -o 'RESP_CODE:[1-5][0-9][0-9]'| cut -d':' -f2)
+                
+                echo "Validation result: ${CURL_CODE}"
+                
+                if [ "${CURL_CODE}" == 200 ]; then
+                  success
+                elif [ "${CURL_CODE}" == 403 ]; then
+                  failure
+                else
+                  echo "Return code ${CURL_CODE} from validation check, possibly upstream error. Exiting."
+                  echo "Result from curl:"
+                  echo "${CURL_RESULT}"
+                fi
+                
+                exit 0
+                
             volumeMounts:
                 - name: secret-volume
                   mountPath: /etc/secret-volume

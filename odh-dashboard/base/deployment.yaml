@@ -12,6 +12,18 @@ spec:
       labels:
         deployment: rhods-dashboard
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - rhods-dashboard
+                topologyKey: topology.kubernetes.io/zone
       serviceAccount: rhods-dashboard
       containers:
       - name: rhods-dashboard

@@ -20,7 +20,8 @@ spec:
       port: https
       scheme: https
       tlsConfig:
-        insecureSkipVerify: true
+        caFile: /etc/prometheus/configmaps/serving-certs-ca-bundle/service-ca.crt
+        serverName: prometheus.redhat-ods-monitoring.svc
       scrapeTimeout: 10s
       interval: 30s
   namespaceSelector:
