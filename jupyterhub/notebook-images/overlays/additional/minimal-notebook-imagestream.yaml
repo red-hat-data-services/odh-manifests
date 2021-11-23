@@ -3,6 +3,7 @@ kind: ImageStream
 metadata:
   labels:
     opendatahub.io/notebook-image: "true"
+    rhods/prebuilt: "true"
   annotations:
     opendatahub.io/notebook-image-url: "https://github.com/red-hat-data-services/s2i-minimal-notebook"
     opendatahub.io/notebook-image-name: "Minimal Python"
@@ -21,6 +22,6 @@ spec:
     from:
       kind: DockerImage
       name: quay.io/modh/odh-minimal-notebook-container:latest
-    name: "rhods-version"
+    name: "py3.8"
     referencePolicy:
       type: Local

@@ -3,6 +3,7 @@ kind: ImageStream
 metadata:
   labels:
     opendatahub.io/notebook-image: "true"
+    rhods/prebuilt: "true"
   annotations:
     opendatahub.io/notebook-image-url: "https://github.com/red-hat-data-services/s2i-generic-data-science-notebook"
     opendatahub.io/notebook-image-name: "Standard Data Science"
@@ -20,6 +21,6 @@ spec:
     from:
       kind: DockerImage
       name: quay.io/modh/odh-generic-data-science-notebook:nb-1
-    name: "rhods-version"
+    name: "py3.8"
     referencePolicy:
       type: Source
