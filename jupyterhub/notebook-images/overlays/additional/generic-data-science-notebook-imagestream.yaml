@@ -20,7 +20,7 @@ spec:
       openshift.io/imported-from: quay.io/modh/odh-generic-data-science-notebook
     from:
       kind: DockerImage
-      name: quay.io/modh/odh-generic-data-science-notebook:nb-1
+      name: quay.io/modh/odh-generic-data-science-notebook:nb-2
     name: "py3.8"
     referencePolicy:
       type: Source
