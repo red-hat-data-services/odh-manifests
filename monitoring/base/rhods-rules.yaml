@@ -12,3 +12,7 @@ spec:
     rules:
     - record: cluster:usage:consumption:rhods:cpu:seconds:rate5m
       expr: sum(rate(container_cpu_usage_seconds_total{container="",pod=~"jupyterhub-nb.*",namespace="rhods-notebooks"}[5m]))
+    - record: cluster:usage:consumption:rhods:pod:up
+      expr: count(kube_pod_container_status_ready{namespace="rhods-notebooks",pod=~"jupyterhub-nb.*"}==1)
+    - record: cluster:usage:consumption:rhods:active_users
+      expr: count(count_over_time(kube_pod_container_status_ready{namespace="rhods-notebooks",pod=~"jupyterhub-nb.*"}[1h]))
