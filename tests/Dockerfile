@@ -1,7 +1,7 @@
 FROM centos:centos8
 
 # List of chromedriver versions for download - https://chromedriver.chromium.org/downloads
-ARG CHROMEDRIVER_VER=95.0.4638.17
+ARG CHROMEDRIVER_VER=97.0.4692.71
 ARG ORG=opendatahub-io
 ARG BRANCH=master
 ARG ODS_CI_BRANCH=master
