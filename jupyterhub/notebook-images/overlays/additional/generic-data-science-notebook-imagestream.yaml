@@ -20,7 +20,8 @@ spec:
       openshift.io/imported-from: quay.io/modh/odh-generic-data-science-notebook
     from:
       kind: DockerImage
+      # if you change the image tag, change the "-N" on the tag name immediately below
       name: quay.io/modh/odh-generic-data-science-notebook:nb-5
-    name: "py3.8"
+    name: "py3.8-1"
     referencePolicy:
       type: Source

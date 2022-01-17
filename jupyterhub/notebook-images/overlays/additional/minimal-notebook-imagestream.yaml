@@ -21,7 +21,9 @@ spec:
       opendatahub.io/default-image: "true"
     from:
       kind: DockerImage
+      # in a downstream build "latest" will be replaced
       name: quay.io/modh/odh-minimal-notebook-container:latest
-    name: "py3.8"
+    # in a downstream build "rhodsversion" will be replaced
+    name: "py3.8-rhodsversion"
     referencePolicy:
       type: Local
