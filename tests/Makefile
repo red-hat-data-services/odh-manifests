@@ -2,6 +2,9 @@ IMAGE=odh-manifests-test
 GIT_ORG=opendatahub-io
 GIT_BRANCH=master
 ODHPROJECT=opendatahub
+# Specify the repo and git ref/branch to use for cloning ods-ci
+ODS_CI_REPO=https://github.com/red-hat-data-services/ods-ci
+ODS_CI_GITREF=master
 OPENSHIFT_USER=
 OPENSHIFT_PASS=
 OPENSHIFT_LOGIN_PROVIDER=
@@ -17,7 +20,7 @@ all: test
 test: build run clean
 
 build:
-	podman build -t $(IMAGE) --build-arg ORG=$(GIT_ORG) --build-arg BRANCH=$(GIT_BRANCH) .
+	podman build -t $(IMAGE) --build-arg ORG=$(GIT_ORG) --build-arg BRANCH=$(GIT_BRANCH) --build-arg ODS_CI_REPO=$(ODS_CI_REPO) --build-arg ODS_CI_GITREF=$(ODS_CI_GITREF) .
 
 run:
 	# Confirm that we have a directory for storing any screenshots from selenium tests
