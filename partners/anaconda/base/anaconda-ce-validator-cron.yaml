@@ -34,14 +34,14 @@ spec:
                 IMAGESTREAM_NAME='s2i-minimal-notebook-anaconda'
                 CONFIGMAP_NAME='anaconda-ce-validation-result'
                 BUILDCONFIG_NAME='s2i-minimal-notebook-anaconda'
-                ANACONDA_VERSION='v0.1.1-anaconda'
+                ANACONDA_VERSION='v0.2.2-anaconda'
                 
                 function generate_imagestream() {
-                  echo '{"apiVersion":"image.openshift.io/v1","kind":"ImageStream","metadata":{"annotations":{"opendatahub.io/notebook-image-desc":"Notebook with Anaconda CE tools instead of pip.","opendatahub.io/notebook-image-name":"Anaconda Commercial Edition","opendatahub.io/notebook-image-url":"https://github.com/red-hat-data-services/s2i-minimal-notebook-anaconda"},"labels":{"component.opendatahub.io/name":"jupyterhub","opendatahub.io/modified":"false","opendatahub.io/notebook-image":"true"},"name":"s2i-minimal-notebook-anaconda"},"spec":{"lookupPolicy":{"local":true},"tags":[{"annotations":{"opendatahub.io/notebook-python-dependencies":"[{\"name\":\"Anaconda\",\"version\":\"2020.11\"},{\"name\":\"conda\",\"version\":\"4.9.2\"}]","opendatahub.io/notebook-software":"[{\"name\":\"Anaconda-Python\",\"version\":\"v3.8.5\"}]"},"name":"v0.1.1-anaconda","referencePolicy":{"type":"Source"}}]}}'
+                  echo '{"apiVersion":"image.openshift.io/v1","kind":"ImageStream","metadata":{"annotations":{"opendatahub.io/notebook-image-desc":"Notebook with Anaconda CE tools instead of pip.","opendatahub.io/notebook-image-name":"Anaconda Commercial Edition","opendatahub.io/notebook-image-url":"https://github.com/red-hat-data-services/s2i-minimal-notebook-anaconda"},"labels":{"component.opendatahub.io/name":"jupyterhub","opendatahub.io/modified":"false","opendatahub.io/notebook-image":"true"},"name":"s2i-minimal-notebook-anaconda"},"spec":{"lookupPolicy":{"local":true},"tags":[{"annotations":{"opendatahub.io/notebook-python-dependencies":"[{\"name\":\"Anaconda\",\"version\":\"2020.11\"},{\"name\":\"conda\",\"version\":\"4.9.2\"}]","opendatahub.io/notebook-software":"[{\"name\":\"Anaconda-Python\",\"version\":\"v3.8.5\"}]"},"name":"v0.2.2-anaconda","referencePolicy":{"type":"Source"}}]}}'
                 }
                 
                 function generate_buildconfig() {
-                  echo '{"kind":"BuildConfig","apiVersion":"build.openshift.io/v1","metadata":{"name":"s2i-minimal-notebook-anaconda","namespace":"redhat-ods-applications","labels":{"opendatahub.io/build_type":"notebook_image"}},"spec":{"output":{"to":{"kind":"ImageStreamTag","name":"s2i-minimal-notebook-anaconda:v0.1.1-anaconda"}},"strategy":{"type":"Docker","dockerStrategy":{"dockerfilePath":"Dockerfile.AIO"}},"source":{"type":"Git","git":{"uri":"https://github.com/red-hat-data-services/s2i-minimal-notebook-anaconda","ref":"v0.1.1-anaconda-aio"}},"runPolicy":"Serial"}}'
+                  echo '{"kind":"BuildConfig","apiVersion":"build.openshift.io/v1","metadata":{"name":"s2i-minimal-notebook-anaconda","namespace":"redhat-ods-applications","labels":{"opendatahub.io/build_type":"notebook_image"}},"spec":{"output":{"to":{"kind":"ImageStreamTag","name":"s2i-minimal-notebook-anaconda:v0.2.2-anaconda"}},"strategy":{"type":"Docker","dockerStrategy":{"dockerfilePath":"Dockerfile.AIO"}},"source":{"type":"Git","git":{"uri":"https://github.com/red-hat-data-services/s2i-minimal-notebook-anaconda","ref":"v0.2.2-anaconda"}},"runPolicy":"Serial"}}'
                 }
                 
                 function create_imagestream() {
