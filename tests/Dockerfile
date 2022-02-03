@@ -1,4 +1,4 @@
-FROM centos:centos8
+FROM quay.io/centos/centos:stream8
 
 # List of chromedriver versions for download - https://chromedriver.chromium.org/downloads
 ARG CHROMEDRIVER_VER=97.0.4692.71
