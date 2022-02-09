@@ -11,6 +11,7 @@ JH_LOGIN_PASS=${OPENSHIFT_PASS:-"admin"} #Password used to login to JH
 OPENSHIFT_LOGIN_PROVIDER=${OPENSHIFT_LOGIN_PROVIDER:-"htpasswd-provider"} #OpenShift OAuth provider used for login
 JH_AS_ADMIN=${JH_AS_ADMIN:-"true"} #Expect the user to be Admin in JupyterHub
 ODS_CI_REPO_ROOT=${ODS_CI_REPO_ROOT:-"${HOME}/src/ods-ci"}
+JH_ADMIN_GROUP_NAME=${JH_ADMIN_GROUP_NAME:-"rhods-admins"}
 
 os::test::junit::declare_suite_start "$MY_SCRIPT"
 
@@ -30,10 +31,14 @@ function test_ods_ci() {
     header "Running ODS-CI automation"
 
     os::cmd::expect_success "oc project ${ODHPROJECT}"
+
+    header "Adding ${JH_LOGIN_USER} to list of authorized JupyterHub users"
+    os::cmd::expect_success "oc adm groups add-users ${JH_ADMIN_GROUP_NAME} ${JH_LOGIN_USER}"
+
     ODH_JUPYTERHUB_URL="https://"$(oc get route jupyterhub -o jsonpath='{.spec.host}')
     pushd ${HOME}/src/ods-ci
     #TODO: Add a test that will iterate over all of the notebook using the notebooks in https://github.com/opendatahub-io/testing-notebooks
-    os::cmd::expect_success "run_robot_test.sh --test-artifact-dir ${ARTIFACT_DIR} --test-case ${MY_DIR}/../resources/ods-ci/test-odh-jupyterlab-notebook.robot --test-variables-file ${MY_DIR}/../resources/ods-ci/test-variables.yml --test-variable 'ODH_JUPYTERHUB_URL:${ODH_JUPYTERHUB_URL}' --test-variable RESOURCE_PATH:${PWD}/tests/Resources"
+    os::cmd::expect_success "run_robot_test.sh --test-artifact-dir ${ARTIFACT_DIR} --test-case ${MY_DIR}/../resources/ods-ci/test-odh-jupyterlab-notebook.robot --test-variables-file ${MY_DIR}/../resources/ods-ci/test-variables.yml --test-variable 'ODH_JUPYTERHUB_URL:${ODH_JUPYTERHUB_URL}' --test-variable RESOURCE_PATH:${PWD}/tests/Resources --test-variable TEST_USER.AUTH_TYPE:${OPENSHIFT_LOGIN_PROVIDER} --test-variable TEST_USER.USERNAME:${JH_LOGIN_USER} --test-variable TEST_USER.PASSWORD:${JH_LOGIN_PASS}"
     popd
 }
 
