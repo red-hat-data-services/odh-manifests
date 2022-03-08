@@ -83,5 +83,9 @@ else
     exit $kfctl_result
   fi
 fi
+
+# Apply the rhods-admins group configmap that will be used by JupyterHub
+oc apply -f $HOME/peak/operator-tests/odh-manifests/resources/jupyterhub/groups.configmap.yaml
+
 set +x
 popd
