@@ -23,6 +23,7 @@ resources:
 - traefik-rolebinding.yaml
 - traefik-serviceaccount.yaml
 - traefik-service.yaml
+- groups-config.yaml
 
 commonLabels:
   opendatahub.io/component: "true"
