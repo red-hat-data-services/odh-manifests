@@ -87,12 +87,3 @@ rules:
       - delete
     resources:
       - deploymentconfigs
-      - builds
-      - buildconfigs
-      - buildconfigs/instantiate
-  - verbs:
-      - list
-    apiGroups:
-      - rbac.authorization.k8s.io
-    resources:
-      - rolebindings
