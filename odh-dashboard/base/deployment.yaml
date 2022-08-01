@@ -27,7 +27,7 @@ spec:
       serviceAccount: rhods-dashboard
       containers:
       - name: rhods-dashboard
-        image: quay.io/modh/odh-dashboard:v1.0.11
+        image: rhods-dashboard
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

@@ -9,10 +9,11 @@
       - --upstream=http://localhost:8080
       - --tls-cert=/etc/tls/private/tls.crt
       - --tls-key=/etc/tls/private/tls.key
-      - --cookie-secret=SECRET
+      - --cookie-secret-file=/etc/oauth/config/cookie_secret
+      - --pass-access-token
       - '--openshift-delegate-urls={"/": {"resource": "route", "verb": "get", "name": "rhods-dashboard"}}'
       - --skip-auth-regex=^/metrics
-    image: registry.redhat.io/openshift4/ose-oauth-proxy:v4.8
+    image: oauth-proxy
     ports:
       - containerPort: 8443
         name: https
@@ -46,9 +47,15 @@
     volumeMounts:
       - mountPath: /etc/tls/private
         name: proxy-tls
+      - mountPath: /etc/oauth/config
+        name: oauth-config
+        
 - op: add
   path: /spec/template/spec/volumes
   value:
     - name: proxy-tls
       secret:
         secretName: dashboard-proxy-tls
+    - name: oauth-config
+      secret:
+        secretName: dashboard-oauth-config

@@ -8,7 +8,7 @@ rules:
       - watch
       - list
     apiGroups:
-      - ""
+      - ''
       - config.openshift.io
     resources:
       - clusterversions
@@ -21,15 +21,20 @@ rules:
     resources:
       - clusterserviceversions
       - subscriptions
-  - verbs:
+  - apiGroups:
+      - ''
+    verbs:
+      - create
+      - delete
       - get
       - list
+      - patch
+      - update
       - watch
-    apiGroups:
-      - ""
     resources:
-      - services
       - configmaps
+      - persistentvolumeclaims
+      - secrets
   - verbs:
       - get
       - list
@@ -59,7 +64,7 @@ rules:
       - watch
       - list
     apiGroups:
-      - ""
+      - ''
       - integreatly.org
     resources:
       - rhmis
@@ -76,10 +81,34 @@ rules:
       - list
       - watch
     apiGroups:
-      - ""
+      - ''
     resources:
       - pods
       - serviceaccounts
-      - secrets
       - services
       - namespaces
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+    resources:
+      - rolebindings
+      - roles
+  - apiGroups:
+      - kubeflow.org
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+    resources:
+      - notebooks
