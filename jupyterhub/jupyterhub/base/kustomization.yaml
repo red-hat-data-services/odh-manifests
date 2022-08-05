@@ -11,6 +11,7 @@ resources:
 - jupyterhub-rolebinding.yaml
 - jupyterhub-cluster-role.yaml
 - jupyterhub-cluster-rolebinding.yaml
+- jupyterhub-monitoring-rolebinding.yaml
 - jupyterhub-route.yaml
 - jupyterhub-singleuser-profiles-configmap.yaml
 - jupyterhub-spark-operator-configmap.yaml
