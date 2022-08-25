@@ -15,3 +15,7 @@ resources:
 - routes.yaml
 - service.yaml
 - rhodsquickstartcrd.yaml
+images:
+- name: rhods-dashboard
+  newName: quay.io/opendatahub/rhods-dashboard
+  newTag: latest
