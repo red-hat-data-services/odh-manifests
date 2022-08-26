@@ -15,7 +15,7 @@ spec:
     - record: cluster:usage:consumption:rhods:pod:up
       expr: count(kube_pod_container_status_ready{namespace="rhods-notebooks", pod=~"jupyter-nb.*",container=~"jupyter-nb-.*"}==1)
     - record: cluster:usage:consumption:rhods:active_users
-      expr: count(notebook_running)
+      expr: count(kube_statefulset_replicas{namespace=~"rhods-notebooks", statefulset=~"jupyter-nb-.*"} ==1)
       labels:
         instance: jupyter-notebooks
     - record: cluster:usage:consumption:rhods:cpu_requests_runtime
