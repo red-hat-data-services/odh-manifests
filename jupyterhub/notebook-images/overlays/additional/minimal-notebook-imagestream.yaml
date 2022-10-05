@@ -3,9 +3,8 @@ kind: ImageStream
 metadata:
   labels:
     opendatahub.io/notebook-image: "true"
-    rhods/prebuilt: "true"
   annotations:
-    opendatahub.io/notebook-image-url: "https://github.com/red-hat-data-services/s2i-minimal-notebook"
+    opendatahub.io/notebook-image-url: "https://github.com/red-hat-data-services/notebooks/tree/main/jupyter/minimal/ubi8-python-3.8"
     opendatahub.io/notebook-image-name: "Minimal Python"
     opendatahub.io/notebook-image-desc: "Jupyter notebook image with minimal dependency set to start experimenting with Jupyter environment."
     opendatahub.io/notebook-image-order: "10"
@@ -22,8 +21,8 @@ spec:
     from:
       kind: DockerImage
       # in a downstream build "latest" will be replaced
-      name: quay.io/modh/odh-minimal-notebook-container:latest
+      name: quay.io/modh/odh-minimal-notebook-container@sha256:a5a7738b09a204804e084a45f96360b568b0b9d85709c0ce6742d440ff917183
     # in a downstream build "rhodsversion" will be replaced
-    name: "py3.8-rhodsversion"
+    name: "py3.8-v1"
     referencePolicy:
       type: Local
