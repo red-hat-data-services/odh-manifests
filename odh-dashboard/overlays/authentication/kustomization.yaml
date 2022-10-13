@@ -31,4 +31,4 @@ patchesJson6902:
 images:
 - name: oauth-proxy
   newName: registry.redhat.io/openshift4/ose-oauth-proxy
-  newTag: v4.8
+  digest: sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46

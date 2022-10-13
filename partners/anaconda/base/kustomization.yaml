@@ -6,3 +6,17 @@ resources:
 commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: anaconda-ce
+
+configMapGenerator:
+- name: anaconda-image-parameters
+  env: params.env
+generatorOptions:
+  disableNameSuffixHash: true
+vars:
+- name: odh-anaconda-ce-validator-image
+  objref:
+    kind: ConfigMap
+    name: anaconda-image-parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.odh-anaconda-ce-validator-image

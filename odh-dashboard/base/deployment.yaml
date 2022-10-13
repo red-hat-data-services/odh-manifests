@@ -27,7 +27,7 @@ spec:
       serviceAccount: rhods-dashboard
       containers:
       - name: rhods-dashboard
-        image: rhods-dashboard
+        image: $(odh-dashboard-image)
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

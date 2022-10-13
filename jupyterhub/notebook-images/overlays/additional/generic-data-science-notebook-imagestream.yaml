@@ -21,7 +21,7 @@ spec:
     from:
       kind: DockerImage
       # if you change the image tag, change the "-N" on the tag name immediately below
-      name: quay.io/modh/odh-generic-data-science-notebook:nb-5
+      name: quay.io/modh/odh-generic-data-science-notebook@sha256:3a8b19ea2ca3e8d04b0c858fe1d0aeb217eafe5cb4f6d2488e42b8c3b0cd3dde
     name: "py3.8-1"
     referencePolicy:
       type: Source

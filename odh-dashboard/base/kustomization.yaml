@@ -17,7 +17,19 @@ resources:
 - odh-application-crd.yaml
 - odh-document-crd.yaml
 - odh-quick-start-crd.yaml
-images:
-- name: rhods-dashboard
-  newName: quay.io/opendatahub/rhods-dashboard
-  newTag: latest
+
+configMapGenerator:
+- name: odh-dashboard-image-parameters
+  env: params.env
+generatorOptions:
+  disableNameSuffixHash: true
+vars:
+- name: odh-dashboard-image
+  objref:
+    kind: ConfigMap
+    name: odh-dashboard-image-parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.odh-dashboard-image
+configurations:
+- params.yaml

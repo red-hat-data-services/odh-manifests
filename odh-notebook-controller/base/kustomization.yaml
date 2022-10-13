@@ -2,5 +2,28 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
-  - ../kf-notebook-controller/overlays/openshift
-  - ../odh-notebook-controller/base
+- ../kf-notebook-controller/overlays/openshift
+- ../odh-notebook-controller/base
+
+
+configMapGenerator:
+- name: notebook-controller-image-parameters
+  env: params.env
+generatorOptions:
+  disableNameSuffixHash: true
+
+vars:
+- name: odh-kf-notebook-controller-image
+  objref:
+    kind: ConfigMap
+    name: notebook-controller-image-parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.odh-kf-notebook-controller-image
+- name: odh-notebook-controller-image
+  objref:
+    kind: ConfigMap
+    name: notebook-controller-image-parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.odh-notebook-controller-image
