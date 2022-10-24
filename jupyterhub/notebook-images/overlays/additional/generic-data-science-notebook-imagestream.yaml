@@ -3,9 +3,8 @@ kind: ImageStream
 metadata:
   labels:
     opendatahub.io/notebook-image: "true"
-    rhods/prebuilt: "true"
   annotations:
-    opendatahub.io/notebook-image-url: "https://github.com/red-hat-data-services/s2i-generic-data-science-notebook"
+    opendatahub.io/notebook-image-url: "https://github.com/red-hat-data-services/notebooks/tree/main/jupyter/datascience/ubi8-python-3.8"
     opendatahub.io/notebook-image-name: "Standard Data Science"
     opendatahub.io/notebook-image-desc: "Jupyter notebook image with a set of data science libraries that advanced AI/ML notebooks will use as a base image to provide a standard for libraries avialable in all notebooks"
     opendatahub.io/notebook-image-order: "20"
@@ -21,7 +20,7 @@ spec:
     from:
       kind: DockerImage
       # if you change the image tag, change the "-N" on the tag name immediately below
-      name: quay.io/modh/odh-generic-data-science-notebook@sha256:3a8b19ea2ca3e8d04b0c858fe1d0aeb217eafe5cb4f6d2488e42b8c3b0cd3dde
-    name: "py3.8-1"
+      name: quay.io/modh/odh-generic-data-science-notebook@sha256:ebb5613e6b53dc4e8efcfe3878b4cd10ccb77c67d12c00d2b8c9d41aeffd7df5
+    name: "py3.8-v1"
     referencePolicy:
       type: Source
