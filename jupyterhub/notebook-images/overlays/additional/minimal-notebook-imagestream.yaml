@@ -22,7 +22,7 @@ spec:
     from:
       kind: DockerImage
       # in a downstream build "latest" will be replaced
-      name: quay.io/modh/odh-minimal-notebook-container@sha256:34d396306badc7cb96af2cac1181f840b73f5bfbd87a053735782faa2f67a3df
+      name: quay.io/modh/odh-minimal-notebook-container@sha256:a5a7738b09a204804e084a45f96360b568b0b9d85709c0ce6742d440ff917183
     # in a downstream build "rhodsversion" will be replaced
     name: "py3.8-rhodsversion"
     referencePolicy:
