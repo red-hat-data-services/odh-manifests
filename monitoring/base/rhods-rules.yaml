@@ -12,6 +12,8 @@ spec:
     rules:
     - record: cluster:usage:consumption:rhods:cpu:seconds:rate1h
       expr: sum(rate(container_cpu_usage_seconds_total{container="",pod=~"jupyter-nb.*",namespace="rhods-notebooks"}[1h]))
+    - record: cluster:usage:consumption:rhods:capacity_physical_cpu_cores:sum
+      expr: ((sum(node_role_os_version_machine:cpu_capacity_cores:sum{label_node_role_kubernetes_io_master="",label_node_role_kubernetes_io_infra=""} or absent(__does_not_exist__)*0)) + ((sum(node_role_os_version_machine:cpu_capacity_cores:sum{label_node_role_kubernetes_io_master="true"} or absent(__does_not_exist__)*0) * ((max(cluster_master_schedulable == 1)*0+1) or (absent(cluster_master_schedulable == 1)*0)))))*2
     - record: cluster:usage:consumption:rhods:pod:up
       expr: count(kube_pod_container_status_ready{namespace="rhods-notebooks", pod=~"jupyter-nb.*",container=~"jupyter-nb-.*"}==1)
     - record: cluster:usage:consumption:rhods:active_users
