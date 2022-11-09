@@ -5,6 +5,9 @@ bases:
 resources:
 - minimal-notebook-imagestream.yaml
 - generic-data-science-notebook-imagestream.yaml
+- minimal-gpu-notebook-imagestream.yaml
+- pytorch-notebook-imagestream.yaml
+- tensorflow-notebook-imagestream.yaml
 
 commonLabels:
   opendatahub.io/component: "true"
