@@ -79,7 +79,7 @@ spec:
         - '-upstream=http://localhost:9090'
         - '-tls-cert=/etc/tls/private/tls.crt'
         - '-tls-key=/etc/tls/private/tls.key'
-        - '-cookie-secret=SECRET' # TO DO, FIX THIS. USE DEPLOYER TO GENERATE A SECRET THAT IS MOUNTED HERE
+        - '--cookie-secret-file=/etc/oauth/config/cookie_secret'
         - '--openshift-sar={"namespace": "redhat-ods-monitoring", "resource": "services", "verb": "get"}'
         - '--openshift-delegate-urls={"/": {"namespace": "redhat-ods-monitoring", "resource": "services", "verb": "get"}}'
         - '-skip-auth-regex=^/metrics'
@@ -93,6 +93,8 @@ spec:
       volumeMounts:
         - mountPath: /etc/tls/private
           name: prometheus-tls
+        - mountPath: /etc/oauth/config
+          name: oauth-config
   serviceMonitorSelector:
     matchLabels:
       modelmesh-service: modelmesh-serving
@@ -100,6 +102,9 @@ spec:
     - name: prometheus-tls
       secret:
         secretName: serving-prometheus-proxy-tls
+    - name: oauth-config
+      secret:
+        secretName: modelmesh-monitoring-oauth-config-generated
   replicas: 3
 
 ---
@@ -125,3 +130,14 @@ spec:
   selector:
     matchLabels:
       modelmesh-service: modelmesh-serving
+
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: modelmesh-monitoring-oauth-config
+  annotations:
+    secret-generator.opendatahub.io/name: "cookie_secret"
+    secret-generator.opendatahub.io/type: "oauth"
+    secret-generator.opendatahub.io/complexity: "16"
