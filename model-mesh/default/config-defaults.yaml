@@ -15,8 +15,7 @@
 podsPerRuntime: 2
 headlessService: true
 modelMeshImage:
-  name: quay.io/opendatahub/modelmesh
-  tag: v0.9.0
+  name: $(odh-modelmesh)
 modelMeshResources:
   requests:
     cpu: "300m"
@@ -28,8 +27,7 @@ restProxy:
   enabled: true
   port: 8008
   image:
-    name: quay.io/opendatahub/rest-proxy
-    tag: v0.1.4
+    name: $(odh-mm-rest-proxy)
   resources:
     requests:
       cpu: "50m"
@@ -38,8 +36,7 @@ restProxy:
       cpu: "1"
       memory: "512Mi"
 storageHelperImage:
-  name: quay.io/opendatahub/modelmesh-runtime-adapter
-  tag: v0.9.0
+  name: $(odh-modelmesh-runtime-adapter)
   command: ["/opt/app/puller"]
 storageHelperResources:
   requests:

@@ -34,7 +34,7 @@ spec:
 
   containers:
     - name: ovms
-      image: ovms-1:replace
+      image: $(odh-openvino)
       args:
         - --port=8001
         - --rest_port=8888
