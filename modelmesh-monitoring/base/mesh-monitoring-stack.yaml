@@ -132,6 +132,42 @@ spec:
       modelmesh-service: modelmesh-serving
 
 ---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: modelmesh-federated-metrics
+  labels:
+    modelmesh-service: modelmesh-serving
+spec:
+  endpoints:
+    - interval: 30s
+      params:
+        'match[]':
+          - '{__name__= "haproxy_backend_http_average_response_latency_milliseconds"}'
+          - '{__name__= "haproxy_backend_http_responses_total"}'
+      honorLabels: true
+      scrapeTimeout: 10s
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      bearerTokenSecret:
+        key: ""
+      path: /federate
+      port: web
+      scheme: https
+      tlsConfig:
+        ca: { }
+        cert: { }
+        insecureSkipVerify: true
+  namespaceSelector:
+    matchNames:
+      - openshift-monitoring
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: prometheus
+      app.kubernetes.io/instance: k8s
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/part-of: openshift-monitoring
+
+---
 apiVersion: v1
 kind: Secret
 type: Opaque
