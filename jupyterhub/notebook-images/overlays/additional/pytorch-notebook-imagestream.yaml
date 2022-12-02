@@ -2,24 +2,35 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   labels:
-    opendatahub.io/notebook-image: "true"
+    opendatahub.io/notebook-image: 'true'
   annotations:
-    opendatahub.io/notebook-image-url: "https://github.com/red-hat-data-services/notebooks/blob/main/jupyter/pytorch/ubi8-python-3.8"
-    opendatahub.io/notebook-image-name: "PyTorch"
-    opendatahub.io/notebook-image-desc: "Jupyter notebook image with PyTorch libraries and dependencies to start experimenting with advanced AI/ML notebooks."
-    opendatahub.io/notebook-image-order: "40"
+    opendatahub.io/notebook-image-url: 'https://github.com/red-hat-data-services/notebooks/blob/main/jupyter/pytorch/ubi8-python-3.8'
+    opendatahub.io/notebook-image-name: 'PyTorch'
+    opendatahub.io/notebook-image-desc: 'Jupyter notebook image with PyTorch libraries
+      and dependencies to start experimenting with advanced AI/ML notebooks.'
+    opendatahub.io/notebook-image-order: '40'
   name: pytorch
 spec:
   lookupPolicy:
     local: true
   tags:
-  - annotations:
+    - annotations:
+        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8"},{"name":"PyTorch","version":"1.13"}]'
+        opendatahub.io/notebook-python-dependencies: '[{"name":"boto3","version":"1.24.39"},{"name":"kafka-python","version":"2.0.2"},{"name":"matplotlib","version":"3.6.2"},{"name":"numpy","version":"1.23.5"},{"name":"pandas","version":"1.5.1"},{"name":"scikit-learn","version":"1.1.3"},{"name":"scipy","version":"1.9.3"},{"name":"tensorboard","version":"2.11.0"},{"name":"torch","version":"1.13.0"}]'
+        openshift.io/imported-from: quay.io/modh/odh-pytorch-notebook
+      from:
+        kind: DockerImage
+        name: quay.io/modh/odh-pytorch-notebook@sha256:e478d5992642feaa640f989d55f7a64107f8c8fd815bf0f0c5640746e8fac0a8
+      name: 'py3.8-v1.3.1'
+      referencePolicy:
+        type: Local
+    - annotations:
         opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8"},{"name":"PyTorch","version":"1.8"}]'
-        opendatahub.io/notebook-python-dependencies: '[{"name":"PyTorch","version":"1.8"},{"name":"Tensorboard","version":"2.6"},{"name":"Boto3","version":"1.17"},{"name":"Kafka-Python","version":"2.0"},{"name":"Matplotlib","version":"3.4"},{"name":"Numpy","version":"1.19"},{"name":"Pandas","version":"1.2"},{"name":"Scikit-learn","version":"0.24"},{"name":"Scipy","version":"1.6"}]'
+        opendatahub.io/notebook-python-dependencies: '[{"name":"boto3","version":"1.17.11"},{"name":"kafka-python","version":"2.0.2"},{"name":"matplotlib","version":"3.4.1"},{"name":"numpy","version":"1.19.2"},{"name":"pandas","version":"1.2.4"},{"name":"scikit-learn","version":"0.24.1"},{"name":"scipy","version":"1.6.2"},{"name":"tensorboard","version":"2.6.0"},{"name":"torch","version":"1.8.1"}]'
         openshift.io/imported-from: quay.io/modh/cuda-notebooks
-    from:
-      kind: DockerImage
-      name: quay.io/modh/cuda-notebooks@sha256:492c37fb4b71c07d929ac7963896e074871ded506230fe926cdac21eb1ab9db8
-    name: "py3.8-cuda-11.4.2-2"
-    referencePolicy:
-      type: Local
+      from:
+        kind: DockerImage
+        name: quay.io/modh/cuda-notebooks@sha256:492c37fb4b71c07d929ac7963896e074871ded506230fe926cdac21eb1ab9db8
+      name: 'py3.8-cuda-11.4.2-2-v1.2.0'
+      referencePolicy:
+        type: Local

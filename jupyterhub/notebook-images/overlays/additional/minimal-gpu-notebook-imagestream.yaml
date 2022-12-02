@@ -2,24 +2,35 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   labels:
-    opendatahub.io/notebook-image: "true"
+    opendatahub.io/notebook-image: 'true'
   annotations:
-    opendatahub.io/notebook-image-url: "https://github.com/red-hat-data-services/notebooks/tree/main/jupyter/minimal/ubi8-python-3.8"
-    opendatahub.io/notebook-image-name: "CUDA"
-    opendatahub.io/notebook-image-desc: "Jupyter notebook image with GPU support and minimal dependency set to start experimenting with Jupyter environment."
-    opendatahub.io/notebook-image-order: "30"
+    opendatahub.io/notebook-image-url: 'https://github.com/red-hat-data-services/notebooks/tree/main/jupyter/minimal/ubi8-python-3.8'
+    opendatahub.io/notebook-image-name: 'CUDA'
+    opendatahub.io/notebook-image-desc: 'Jupyter notebook image with GPU support and
+      minimal dependency set to start experimenting with Jupyter environment.'
+    opendatahub.io/notebook-image-order: '30'
   name: minimal-gpu
 spec:
   lookupPolicy:
     local: true
   tags:
-  - annotations:
+    - annotations:
         opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8"}]'
-        opendatahub.io/notebook-python-dependencies: '[{"name":"JupyterLab","version":"3.2.4"},{"name":"Notebook","version":"6.4"}]'
+        opendatahub.io/notebook-python-dependencies: '[{"name":"jupyterlab","version":"3.5.0"},{"name":"notebook","version":"6.5.2"}]'
         openshift.io/imported-from: quay.io/modh/odh-minimal-notebook-container
-    from:
-      kind: DockerImage
-      name: quay.io/modh/cuda-notebooks@sha256:348fa993347f86d1e0913853fb726c584ae8b5181152f0430967d380d68d804f
-    name: "py3.8-cuda-11.4.2-2"
-    referencePolicy:
-      type: Local
+      from:
+        kind: DockerImage
+        name: quay.io/modh/cuda-notebooks@sha256:007d8e517a0d7ce8647c00a3250d841357b5b80b7a025c3190494a7181feaa24
+      name: 'py3.8-cuda-11.4.2-2-v1.3.1'
+      referencePolicy:
+        type: Local
+    - annotations:
+        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8"}]'
+        opendatahub.io/notebook-python-dependencies: '[{"name":"jupyterlab","version":"3.2.4"},{"name":"notebook","version":"6.4.1"}]'
+        openshift.io/imported-from: quay.io/modh/odh-minimal-notebook-container
+      from:
+        kind: DockerImage
+        name: quay.io/modh/cuda-notebooks@sha256:348fa993347f86d1e0913853fb726c584ae8b5181152f0430967d380d68d804f
+      name: 'py3.8-cuda-11.4.2-2-v1.2.0'
+      referencePolicy:
+        type: Local
