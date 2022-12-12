@@ -19,7 +19,7 @@ spec:
         - '--openshift-sar={"namespace": "redhat-ods-monitoring", "resource": "services", "verb": "get"}'
         - '--openshift-delegate-urls={"/": {"namespace": "redhat-ods-monitoring", "resource": "services", "verb": "get"}}'
         - '-skip-auth-regex=^/metrics'
-      image: 'registry.redhat.io/openshift4/ose-oauth-proxy:v4.8'
+      image: 'registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46'
       imagePullPolicy: Always
       name: oauth-proxy
       ports:

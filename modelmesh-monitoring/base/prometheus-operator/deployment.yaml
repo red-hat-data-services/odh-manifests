@@ -44,13 +44,13 @@ spec:
               containerPort: 8080
               protocol: TCP
           imagePullPolicy: IfNotPresent
-          image: registry.redhat.io/openshift4/ose-prometheus-operator:v4.11.0-202211072116.p0.gcb3afa2.assembly.stream
+          image: registry.redhat.io/openshift4/ose-prometheus-operator@sha256:4aeb07f66dc39889e3d0e66eee7c4ea2e39ce4025852d1d1eaf662af8bd8eeb6
           args:
             - '-alertmanager-config-namespaces=$(NAMESPACE)'
             - '-alertmanager-instance-namespaces=$(NAMESPACE)'
             - '-prometheus-instance-namespaces=$(NAMESPACE)'
             - '-thanos-ruler-instance-namespaces=$(NAMESPACE)'
-            - --prometheus-config-reloader=registry.redhat.io/openshift4/ose-prometheus-config-reloader:v4.11.0-202211072116.p0.gcb3afa2.assembly.stream
-            - --prometheus-default-base-image=registry.redhat.io/openshift4/ose-prometheus:v4.11.0-202211072116.p0.ge751c61.assembly.stream
-            - --alertmanager-default-base-image=registry.redhat.io/openshift4/ose-prometheus-alertmanager:v4.11.0-202211072116.p0.g05cfc39.assembly.stream
+            - --prometheus-config-reloader=registry.redhat.io/openshift4/ose-prometheus-config-reloader@sha256:bd543e039c7c2b0857a7e0ce34d582b8954a8ad3a3f13a2eaaff2904cdae7c53
+            - --prometheus-default-base-image=registry.redhat.io/openshift4/ose-prometheus@sha256:c432e571eb737d55323b5f350b5f714803bf525144cfee3f20782660d9bf10ad
+            - --alertmanager-default-base-image=registry.redhat.io/openshift4/ose-prometheus-alertmanager@sha256:169b788b3f8eb8909ecc1d698ab0a6bf103b49043c7f5fd569789b179928def6
   revisionHistoryLimit: 1
