@@ -52,7 +52,7 @@ spec:
             - /manager
           args:
             - --enable-leader-election
-          image: modelmesh-controller:replace
+          image: $(odh-modelmesh-controller)
           name: manager
           env:
             - name: POD_NAME
