@@ -79,7 +79,7 @@ spec:
               memory: 96Mi
             limits:
               cpu: "1"
-              memory: 512Mi
+              memory: 2Gi
           volumeMounts:
             - mountPath: /etc/model-serving/config-defaults.yaml
               name: config-defaults
