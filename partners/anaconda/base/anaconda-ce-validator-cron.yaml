@@ -24,7 +24,7 @@ spec:
             - name: addon-managed-odh-pullsecret
           containers:
           - name: anaconda-ce-validator
-            image: quay.io/openshift/origin-deployer@sha256:257914781b9037805681530e40dc173850ca1e39ea11d3c641df6d28a334d908
+            image: registry.redhat.io/openshift4/ose-cli@sha256:75bf9b911b6481dcf29f7942240d1555adaa607eec7fc61bedb7f624f87c36d4
             command:
               - /bin/sh
               - -c
