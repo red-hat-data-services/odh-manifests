@@ -17,7 +17,8 @@ resources:
 - odh-application-crd.yaml
 - odh-document-crd.yaml
 - odh-quick-start-crd.yaml
-
+- model-serving-role.yaml
+- model-serving-role-binding.yaml
 configMapGenerator:
 - name: odh-dashboard-image-parameters
   env: params.env
