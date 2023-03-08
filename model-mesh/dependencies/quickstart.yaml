@@ -47,6 +47,35 @@ spec:
           configMap:
             name: etcd-scripts
             defaultMode: 0554
+      initContainers: 
+        - name: etcd-secret-creator
+          image: registry.redhat.io/openshift4/ose-cli@sha256:25fef269ac6e7491cb8340119a9b473acbeb53bc6970ad029fdaae59c3d0ca61
+          command: ["/bin/bash", "-c", "--"]
+          args:
+            - |
+              etcdpasswordexists=$(oc get secrets -o name | grep etcd-passwords || echo "false")
+              modelservingetcdexists=$(oc get secrets -o name | grep model-serving-etcd || echo "false")
+              
+              if [[ $etcdpasswordexists == "false" && $modelservingetcdexists == "false" ]]; then
+                echo "creating etcdpasswords and model-serving-etcd secrets"
+                ETC_ROOT_PSW=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
+                oc create secret generic etcd-passwords --type=string --from-literal=root=$ETC_ROOT_PSW
+                oc create secret generic model-serving-etcd --type=string --from-literal=etcd_connection="{\"endpoints\": \"http://etcd:2379\",\"root_prefix\": \"modelmesh-serving\",\"userid\": \"root\",\"password\": \"$ETC_ROOT_PSW\"}"
+                exit 0
+              elif [[ $etcdpasswordexists != "false" && $modelservingetcdexists == "false" ]]; then
+                echo "etcdpasswords exists, creating model-serving-etcd secret"
+                ETC_ROOT_PSW=$(oc get secrets/etcd-passwords --template={{.data.root}} | base64 -d)
+                oc create secret generic model-serving-etcd --type=string --from-literal=etcd_connection="{\"endpoints\": \"http://etcd:2379\",\"root_prefix\": \"modelmesh-serving\",\"userid\": \"root\",\"password\": \"$ETC_ROOT_PSW\"}"
+                exit 0
+              elif [[ $etcdpasswordexists == "false" && $modelservingetcdexists != "false" ]]; then
+                echo "model-serving-etcd exists, creating etcdpasswords secret"
+                ETC_ROOT_PSW=$(oc get secrets/model-serving-etcd --template={{.data.etcd_connection}} | base64 -d | grep -o '"password": *"[^"]*"' | grep -o '"[^"]*"$' | grep -oP '"\K[^"\047]+(?=["\047])') 
+                oc create secret generic etcd-passwords --type=string --from-literal=root=$ETC_ROOT_PSW
+                exit 0
+              else 
+                echo "secrets etcdpasswords and model-serving-etcd exist, doing nothing"
+                exit 0
+              fi
       containers:
         - command:
             - etcd
@@ -104,3 +133,40 @@ spec:
                   - /bin/sh
                   - -c
                   - /home/scripts/enable_auth.sh ${ROOT_PASSWORD}
+      serviceAccountName: etcd-serviceaccount
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: etcd-serviceaccount
+  namespace: $(monitoring-namespace) 
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: etcd-role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: etcd-clusterrolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: etcd-role
+subjects:
+  - kind: ServiceAccount
+    name: etcd-serviceaccount
