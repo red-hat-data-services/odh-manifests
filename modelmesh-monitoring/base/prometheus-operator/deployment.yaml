@@ -29,7 +29,7 @@ spec:
               memory: 1Gi
             requests:
               cpu: 600m
-              memory: 600m
+              memory: 600Mi
           name: prometheus-operator
           env:
             - name: NAMESPACE
