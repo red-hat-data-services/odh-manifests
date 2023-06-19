@@ -24,7 +24,7 @@ spec:
       name: $(odh-tensorflow-gpu-notebook-image-n)
     name: "2023.1"
     referencePolicy:
-      type: Local
+      type: Source
   # N-1 Version of the image
   - annotations:
         opendatahub.io/notebook-software: '[{"name":"CUDA","version":"11.4"},{"name":"Python","version":"v3.8"},{"name":"TensorFlow","version":"2.7"}]'
@@ -35,4 +35,4 @@ spec:
       name: $(odh-tensorflow-gpu-notebook-image-n-1)
     name: "1.2"
     referencePolicy:
-      type: Local
+      type: Source

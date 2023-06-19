@@ -25,7 +25,7 @@ spec:
       name: $(odh-minimal-notebook-image-n)
     name: "2023.1"
     referencePolicy:
-      type: Local
+      type: Source
   # N-1 Version of the image
   - annotations:
       opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8"}]'
@@ -36,4 +36,4 @@ spec:
       name: $(odh-minimal-notebook-image-n-1)
     name: "1.2"
     referencePolicy:
-      type: Local
+      type: Source

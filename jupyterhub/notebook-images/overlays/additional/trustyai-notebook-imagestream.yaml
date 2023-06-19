@@ -23,4 +23,4 @@ spec:
       name: $(odh-trustyai-notebook-image-n)
     name: "2023.1"
     referencePolicy:
-      type: Local
+      type: Source
