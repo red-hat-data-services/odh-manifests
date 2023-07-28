@@ -18,6 +18,5 @@ vars:
     fieldpath: data.namespace
 
 resources:
-- instascale.yaml
 - mcad.yaml
 - ../rbac
