@@ -40,6 +40,11 @@ spec:
         path: odh-dashboard
     name: odh-dashboard
   - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: trustyai-service-operator
+    name: trustyai-service-operator
+  - kustomizeConfig:
       parameters:
         - name: namespace
           value: openshift-operators
