@@ -1,4 +1,0 @@
-resources:
-  - security.istio.io_peerauthentications.yaml
-  - telemetry.istio.io_telemetries.yaml
-
