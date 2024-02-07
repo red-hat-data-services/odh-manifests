@@ -13,7 +13,7 @@ images:
     digest: sha256:007304a96acd654ca5133c50990c6785464fcea44304c8a846d3279b9c83a9d4
   - name: caikit-tgis-serving
     newName: quay.io/modh/caikit-tgis-serving
-    digest: sha256:ce6b66bb847608dac5eacd7f9123d2a076a06893d7f37f2da5876a8930527513
+    digest: sha256:0fd3584362e8780aed922fe124c8829c1c7df9d55590ba2ae76bb6aef0155c1f
   - name: text-generation-inference
     newName: quay.io/modh/text-generation-inference
-    digest: sha256:a17a2868644929ee844ceb2778ac3f6db0936824d9b89d11ea7aa059466fcd0b
+    digest: sha256:9f18a63cd84b084c3cbf15534f22d5ba6916d9501298abcc03271d26ebf5cdfb
