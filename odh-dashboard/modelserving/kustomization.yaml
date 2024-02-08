@@ -21,3 +21,6 @@ images:
   - name: ovms-kserve
     newName: quay.io/modh/openvino_model_server
     digest: sha256:007304a96acd654ca5133c50990c6785464fcea44304c8a846d3279b9c83a9d4
+  - name: ovms-kserve
+    newName: quay.io/modh/openvino_model_server
+    digest: sha256:007304a96acd654ca5133c50990c6785464fcea44304c8a846d3279b9c83a9d4
