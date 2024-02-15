@@ -7,7 +7,7 @@ resources:
   - ovms-ootb.yaml
   - caikit-ootb.yaml
   - tgis-ootb.yaml
-  - ovms-kserve
+  - ovms-kserve-ootd.yaml
 images:
   - name: ovms-1
     newName: quay.io/modh/openvino_model_server
