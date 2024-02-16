@@ -51,8 +51,6 @@ spec:
                       type: boolean
                     disablePipelines:
                       type: boolean
-                    disableBiasMetrics:
-                      type: boolean
                     disablePerformanceMetrics:
                       type: boolean
                     disableKServe:
